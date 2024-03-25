@@ -43,6 +43,7 @@ private:			// 自分だけアクセスできる
 
 	// メンバ変数
 	D3DXVECTOR3 m_move;		// 移動量
+	int m_nLife;			// 寿命
 
 	// 静的メンバ変数
 	static CListManager<CSnowBall*> m_list;		// リスト情報

@@ -19,6 +19,14 @@ class CPlayer : public CModel
 {
 public:					// 誰でもアクセスできる
 
+	// 列挙型定義
+	enum STATE
+	{
+		STATE_NONE = 0,		// 通常状態
+		STATE_CARRY,		// 運送状態
+		STATE_MAX			// この先の処理を行わない
+	};
+
 	CPlayer();				// コンストラクタ
 	~CPlayer();				// デストラクタ
 
@@ -30,6 +38,8 @@ public:					// 誰でもアクセスできる
 
 	void SetData(void);		// 情報の設定処理
 
+	void TreeHit(void);		// 木とのヒット判定
+
 	// 静的メンバ関数
 	static CPlayer* Create(void);		// 生成処理
 
@@ -39,6 +49,9 @@ private:				// 自分だけアクセスできる
 	void Control(void);		// 操作処理
 	void Camera(void);		// カメラ操作
 	void Shot(void);		// 射撃処理
+
+	// メンバ変数
+	STATE m_state;			// 状態
 };
 
 #endif
