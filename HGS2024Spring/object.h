@@ -52,6 +52,7 @@ public:			// 誰でもアクセスできる
 		TYPE_PLAYER,			// プレイヤー
 		TYPE_OCEAN,				// 海
 		TYPE_TREE,				// 木
+		TYPE_BASE,				// 拠点
 		TYPE_MAX				// この列挙型の総数
 	};
 

@@ -25,6 +25,7 @@
 #include "mob_tree.h"
 #include "player.h"
 #include "enemy.h"
+#include "base.h"
 #include "skybox.h"
 
 //--------------------------------------------
@@ -37,6 +38,7 @@
 //--------------------------------------------
 CPause* CGame::m_pPause = nullptr;							// ポーズの情報
 CPlayer* CGame::m_pPlayer = nullptr;						// プレイヤーの情報
+CBase* CGame::m_pBase = nullptr;							// 拠点の情報
 CGame::STATE CGame::m_GameState = CGame::STATE_START;		// ゲームの進行状態
 int CGame::m_nFinishCount = 0;								// 終了カウント
 bool CGame::m_bPause = false;								// ポーズ状況
@@ -49,6 +51,7 @@ CGame::CGame()
 	// 全ての値をクリアする
 	m_pPause = nullptr;			// ポーズ
 	m_pPlayer = nullptr;		// プレイヤー
+	m_pBase = nullptr;			// 拠点
 	m_nFinishCount = 0;			// 終了カウント
 	m_GameState = STATE_START;	// 状態
 	m_bPause = false;			// ポーズ状況
@@ -81,6 +84,9 @@ HRESULT CGame::Init(void)
 	// プレイヤーの生成
 	m_pPlayer = CPlayer::Create();
 
+	// 拠点の生成
+	m_pBase = CBase::Create();
+
 	CEnemy::Create(D3DXVECTOR3(-500.0f, 80.0f, 300.0f));
 
 	// シーンの初期化
@@ -103,6 +109,7 @@ void CGame::Uninit(void)
 	// ポインタを NULL にする
 	m_pPause = nullptr;			// ポーズ
 	m_pPlayer = nullptr;		// プレイヤー
+	m_pBase = nullptr;			// 拠点
 
 	// 情報を初期化する
 	m_GameState = STATE_START;	// ゲームの進行状態
@@ -327,6 +334,15 @@ CPlayer* CGame::GetPlayer(void)
 }
 
 //======================================
+// 拠点の取得処理
+//======================================
+CBase* CGame::GetBase(void)
+{
+	// 拠点の情報を返す
+	return m_pBase;
+}
+
+//======================================
 // ポーズのNULL化処理
 //======================================
 void CGame::DeletePause(void)
@@ -342,4 +358,13 @@ void CGame::DeletePlayer(void)
 {
 	// プレイヤーのポインタを NULL にする
 	m_pPlayer = nullptr;
+}
+
+//======================================
+// 拠点のNULL化処理
+//======================================
+void CGame::DeleteBase(void)
+{
+	// 拠点を NULL にする
+	m_pBase = nullptr;
 }

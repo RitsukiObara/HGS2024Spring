@@ -17,12 +17,21 @@ namespace
 	const char* MODEL = "data\\MODEL\\ENEMY\\enemy.x";		// 敵のモデル
 }
 
+//-------------------------------------------
+// 静的メンバ変数宣言
+//-------------------------------------------
+CListManager<CEnemy*> CEnemy::m_list = {};			// リスト情報
+
 //=========================
 // オーバーロードコンストラクタ
 //=========================
 CEnemy::CEnemy() : CModel(TYPE_PLAYER, PRIORITY_PLAYER)
 {
+	// 全ての値をクリアする
+	m_state = STATE_PROGRESS;		// 状態
 
+	// リストに追加する
+	m_list.Regist(this);
 }
 
 //=========================
@@ -56,6 +65,9 @@ void CEnemy::Uninit(void)
 {
 	// 終了
 	CModel::Uninit();
+
+	// 引き抜き処理
+	m_list.Pull(this);
 }
 
 //=========================
@@ -63,7 +75,26 @@ void CEnemy::Uninit(void)
 //=========================
 void CEnemy::Update(void)
 {
+	switch (m_state)
+	{
+	case CEnemy::STATE_PROGRESS:		// 進行状態
 
+
+
+		break;
+
+	case CEnemy::STATE_RETURN:			// 帰還状態
+
+
+		break;
+
+	default:
+		
+		// 停止
+		assert(false);
+
+		break;
+	}
 }
 
 //=========================
@@ -141,4 +172,13 @@ CEnemy* CEnemy::Create(const D3DXVECTOR3& pos)
 
 	// 敵のポインタを返す
 	return pEnemy;
+}
+
+//=======================================
+// リストの取得処理
+//=======================================
+CListManager<CEnemy*> CEnemy::GetList(void)
+{
+	// リスト構造の情報を返す
+	return m_list;
 }
