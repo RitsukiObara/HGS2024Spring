@@ -52,6 +52,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{e584ab97-e513-4dfc-aa7c-a4dd75e9e89f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{2f98164d-23c4-4f2f-9421-ea330e24654c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -284,6 +287,9 @@
     </ClCompile>
     <ClCompile Include="time.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -520,6 +526,9 @@
     </ClInclude>
     <ClInclude Include="time.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

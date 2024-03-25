@@ -47,34 +47,6 @@ namespace
 	const float TITLE_HEIGHT = 4000.0f;			// タイトルカメラの高さ
 	const float TITLE_DISTANCE = 8000.0f;		// タイトルカメラの距離
 	const float TITLE_ADD_ROT = 0.005f;			// タイトルカメラの向きの加算数
-
-	const float POSR_SHIFT_Y = 320.0f;			// 注視点のずらす幅(Y軸)
-	const float POSR_SHIFT = 100.0f;			// 注視点のずらす幅
-
-	const D3DXVECTOR3 START_POSV = D3DXVECTOR3(-5000.0f, 2500.0f, 15000.0f);		// スタートカメラの視点
-
-	const float BOSS_CLOSER_RANGE = 3000.0f;	// ボス寄りカメラの距離
-	const float BOSS_CLOSER_HEIGHT = 2200.0f;	// ボス寄りカメラの高さ
-	const float BOSS_CLOSER_CORRECT = 0.08f;	// ボス寄りカメラの補正係数
-
-	const float BOSS_HOWLING_HEIGHT_POSR = 1700.0f;		// ボス雄たけびカメラの注視点の高さ
-	const float BOSS_HOWLING_RANGE_POSV = 3000.0f;		// ボス雄たけびカメラの視点の距離
-	const float BOSS_HOWLING_ROT_SHIFT = 0.45f;			// ボス雄たけびカメラの向きのずらす量
-	const float BOSS_HOWLING_CORRECT = 0.1f;			// ボス雄たけびカメラの補正係数
-
-	const float BOSS_DESTROY_RANGE = 3500.0f;	// ボス寄りカメラの距離
-	const float BOSS_DESTROY_HEIGHT = 1000.0f;	// ボス寄りカメラの高さ
-	const float BOSS_DESTROY_CORRECT = 0.05f;	// ボス寄りカメラの補正係数
-
-	const float GAMEOVER_ROT = D3DX_PI * 0.6f;			// ゲームオーバーカメラの向き
-	const float GAMEOVER_INIT_DISTANCE = 800.0f;		// ゲームオーバーカメラの初期距離
-	const float GAMEOVER_DISTANCE = 650.0f;				// ゲームオーバーカメラの距離
-	const float GAMEOVER_SUB_DISTANCE = 2.0f;			// ゲームオーバーカメラの距離の減算量
-	const float GAMEOVER_DEST_ROT = D3DX_PI * 0.85f;	// ゲームオーバーカメラの向きの目的地
-	const float GAMEOVER_ROT_MAGNI = 0.05f;				// ゲームオーバーカメラの向きの倍率
-
-	const float RESULT_HEIGHT = 4000.0f;				// リザルトカメラの高さ
-	const float RESULT_DEPTH = -5000.0f;				// リザルトカメラの奥行
 }
 
 //=======================
@@ -895,8 +867,8 @@ void CCamera::TypeProcess(void)
 	{
 	case CCamera::TYPE_NONE:			// 通常
 
-		// 追跡処理
-		Chase();
+		// 通常処理
+		Normal();
 
 		break;
 
@@ -917,36 +889,19 @@ void CCamera::TypeProcess(void)
 }
 
 //=======================
-// カメラの追跡処理
+// 通常カメラ
 //=======================
-void CCamera::Chase(void)
+void CCamera::Normal(void)
 {
-	//if (pPlayer != nullptr)
-	//{ // プレイヤーが NULL じゃない場合
+	// 目的の注視点を設定する
+	m_posR.x = 0.0f;
+	m_posR.y = 0.0f;
+	m_posR.z = 0.0f;
 
-	//	// プレイヤーの情報を取得する
-	//	D3DXVECTOR3 pos = pPlayer->GetPos();			// 位置
-
-	//	// 目的の注視点を設定する
-	//	m_posRDest.x = pos.x + sinf(m_rot.y) * POSR_SHIFT;
-	//	m_posRDest.y = pos.y + POSR_SHIFT_Y;
-	//	m_posRDest.z = pos.z + cosf(m_rot.y) * POSR_SHIFT;
-
-	//	// 目的の視点を設定する
-	//	m_posVDest.x = m_posRDest.x + sinf(m_rot.y) * sinf(m_rot.x) * -m_Dis;
-	//	m_posVDest.y = m_posRDest.y + cosf(m_rot.x) * -m_Dis;
-	//	m_posVDest.z = m_posRDest.z + cosf(m_rot.y) * sinf(m_rot.x) * -m_Dis;
-
-	//	// 注視点を補正
-	//	m_posR.x += (m_posRDest.x - m_posR.x) * CORRECT_POSR;
-	//	m_posR.y += (m_posRDest.y - m_posR.y) * CORRECT_POSR;
-	//	m_posR.z += (m_posRDest.z - m_posR.z) * CORRECT_POSR;
-
-	//	// 視点を補正
-	//	m_posV.x += (m_posVDest.x - m_posV.x) * CORRECT_POSV;
-	//	m_posV.y += (m_posVDest.y - m_posV.y) * CORRECT_POSV;
-	//	m_posV.z += (m_posVDest.z - m_posV.z) * CORRECT_POSV;
-	//}
+	// 目的の視点を設定する
+	m_posV.x = 0.0f;
+	m_posV.y = 2000.0f;
+	m_posV.z = -200.0f;
 }
 
 //=======================
