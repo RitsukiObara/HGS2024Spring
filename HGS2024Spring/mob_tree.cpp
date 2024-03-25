@@ -16,7 +16,7 @@
 namespace
 {
 	const D3DXVECTOR3 SCALE = D3DXVECTOR3(3.0f, 3.0f, 3.0f);	// 拡大率
-	const D3DXVECTOR3 LEAF_SHIFT = D3DXVECTOR3(0.0f, 300.0f, 0.0f);			// 葉のずらす幅
+	const D3DXVECTOR3 LEAF_SHIFT = D3DXVECTOR3(0.0f, 250.0f, 0.0f);			// 葉のずらす幅
 	const char* TREE_MODEL = "data\\MODEL\\wood.x";				// 木のモデル
 }
 
@@ -75,7 +75,12 @@ void CMobTree::Uninit(void)
 //=========================
 void CMobTree::Update(void)
 {
+	if (m_pLeaf != nullptr)
+	{ // 葉っぱが NULL じゃない場合
 
+		// 更新処理
+		m_pLeaf->Update();
+	}
 }
 
 //=========================
