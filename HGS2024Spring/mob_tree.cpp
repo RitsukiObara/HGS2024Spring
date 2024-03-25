@@ -16,9 +16,14 @@
 namespace
 {
 	const D3DXVECTOR3 SCALE = D3DXVECTOR3(3.0f, 3.0f, 3.0f);	// 拡大率
-	const D3DXVECTOR3 LEAF_SHIFT = D3DXVECTOR3(0.0f, 250.0f, 0.0f);			// 葉のずらす幅
+	const D3DXVECTOR3 LEAF_SHIFT = D3DXVECTOR3(0.0f, 230.0f, 0.0f);			// 葉のずらす幅
 	const char* TREE_MODEL = "data\\MODEL\\wood.x";				// 木のモデル
 }
+
+//-------------------------------------------
+// 静的メンバ変数宣言
+//-------------------------------------------
+CListManager<CMobTree*> CMobTree::m_list = {};			// リスト情報
 
 //=========================
 // オーバーロードコンストラクタ
@@ -27,6 +32,9 @@ CMobTree::CMobTree() : CModel(TYPE_TREE, PRIORITY_ENTITY)
 {
 	// 全ての値をクリアする
 	m_pLeaf = nullptr;		// 葉のモデル
+
+	// リストに追加する
+	m_list.Regist(this);
 }
 
 //=========================
@@ -68,6 +76,9 @@ void CMobTree::Uninit(void)
 
 	// 終了
 	CModel::Uninit();
+
+	// 引き抜き処理
+	m_list.Pull(this);
 }
 
 //=========================
@@ -172,4 +183,13 @@ CMobTree* CMobTree::Create(const D3DXVECTOR3& pos)
 
 	// 木のポインタを返す
 	return pTree;
+}
+
+//=======================================
+// リストの取得処理
+//=======================================
+CListManager<CMobTree*> CMobTree::GetList(void)
+{
+	// リスト構造の情報を返す
+	return m_list;
 }

@@ -1,1 +1,56 @@
-#pragma once
+//===================================
+//
+// 敵ヘッダー[enemy.h]
+// Author 小原立暉
+//
+//===================================
+#ifndef _ENEMY_H_
+#define _ENEMY_H_
+
+//***********************************
+// インクルードファイル
+//***********************************
+#include "model.h"
+#include "list_manager.h"
+
+//-----------------------------------
+// クラス定義(CEnemy)
+//-----------------------------------
+class CEnemy : public CModel
+{
+public:					// 誰でもアクセスできる
+
+	// 列挙型定義
+	enum STATE
+	{
+		STATE_PROGRESS = 0,		// 進行状態
+		STATE_RETURN,			// 帰還状態
+		STATE_MAX				// この列挙型の総数
+	};
+
+	CEnemy();				// コンストラクタ
+	~CEnemy();				// デストラクタ
+
+	// メンバ関数
+	HRESULT Init(void);		// 初期化処理
+	void Uninit(void);		// 終了処理
+	void Update(void);		// 更新処理
+	void Draw(void);		// 描画処理
+
+	void SetData(const D3DXVECTOR3& pos);		// 情報の設定処理
+
+	// 静的メンバ関数
+	static CEnemy* Create(const D3DXVECTOR3& pos);		// 生成処理
+
+	static CListManager<CEnemy*> GetList(void);			// リストの取得処理
+
+private:				// 自分だけアクセスできる
+
+	// メンバ変数
+	STATE m_state;		// 状態
+
+	// 静的メンバ変数
+	static CListManager<CEnemy*> m_list;		// リスト情報
+};
+
+#endif

@@ -16,6 +16,8 @@
 // 前方宣言
 //--------------------------------------------
 class CPause;			// ポーズ
+class CPlayer;			// プレイヤー
+class CBase;			// 拠点
 
 //--------------------------------------------
 // クラス(ゲームクラス)
@@ -50,9 +52,13 @@ public:						// 誰でもアクセスできる
 
 	static void SetState(const STATE state);		// ゲームの進行状態の設定処理
 	static STATE GetState(void);					// ゲームの進行状態の取得処理
+	static CPlayer* GetPlayer(void);				// プレイヤーの取得処理
+	static CBase* GetBase(void);					// 拠点の取得処理
 
 	// NULL化処理
 	static void DeletePause(void);		// ポーズのNULL化処理
+	static void DeletePlayer(void);		// プレイヤーのNULL化処理
+	static void DeleteBase(void);		// 拠点のNULL化処理
 
 private:					// 自分だけアクセスできる
 
@@ -62,6 +68,8 @@ private:					// 自分だけアクセスできる
 
 	// 静的メンバ変数(最初から必要な物を配置しておく)
 	static CPause* m_pPause;			// ポーズの情報
+	static CPlayer* m_pPlayer;			// プレイヤーの情報
+	static CBase* m_pBase;				// 拠点の情報
 	static STATE m_GameState;			// ゲームの進行状態
 	static int m_nFinishCount;			// 終了カウント
 	static bool m_bPause;				// ポーズ状況

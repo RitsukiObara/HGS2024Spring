@@ -37,7 +37,7 @@ private:				// 自分だけアクセスできる
 
 	// メンバ関数
 	void Control(void);		// 操作処理
-	void Keyboard(void);	// キーボード処理
+	void Camera(void);		// カメラ操作
 	void Shot(void);		// 射撃処理
 };
 

@@ -318,6 +318,9 @@
     <ClCompile Include="enemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="base.cpp">
+      <Filter>Tree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -574,6 +577,9 @@
     </ClInclude>
     <ClInclude Include="enemy.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="base.h">
+      <Filter>Tree</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
