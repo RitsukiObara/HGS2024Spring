@@ -13,12 +13,22 @@
 #include "objectElevation.h"
 #include "useful.h"
 
+#include "mob_tree.h"
+#include "player.h"
+#include "enemy.h"
+
 //===============================
 // マクロ定義
 //===============================
 namespace
 {
 	const float COLLISION_ADD_DIFF_LENGTH = 0.01f;	// 僅かな誤差を埋めるためのマクロ定義(突っかかり防止)
+
+	const D3DXVECTOR3 PLAYER_MAX = D3DXVECTOR3(60.0f, 130.0f, 60.0f);
+	const D3DXVECTOR3 PLAYER_MIN = D3DXVECTOR3(-60.0f, 0.0f, -60.0f);
+
+	const D3DXVECTOR3 TREE_MAX = D3DXVECTOR3(40.0f, 300.0f, 40.0f);
+	const D3DXVECTOR3 TREE_MIN = D3DXVECTOR3(-40.0f, 0.0f, -40.0f);
 }
 
 //===============================
@@ -89,6 +99,69 @@ bool collision::ElevOutRangeCollision(D3DXVECTOR3* pPos, const D3DXVECTOR3& posO
 
 	// 当たり判定状況を返す
 	return bCollision;
+}
+
+//===============================
+// 木のヒット判定
+//===============================
+void collision::TreeHit(CPlayer* pPlayer)
+{
+	// ローカル変数宣言
+	CListManager<CMobTree*> list = CMobTree::GetList();
+	CMobTree* pTree = nullptr;				// 木のポインタ
+	D3DXVECTOR3 pos = pPlayer->GetPos();	// プレイヤーの位置
+	int nNum = list.GetNumData();			// 総数
+
+	for (int nCnt = 0; nCnt < nNum; nCnt++)
+	{
+		// 木のポインタを代入
+		pTree = list.GetData(nCnt);
+
+		if (HexahedronCollision
+		(
+			&pos,
+			pTree->GetPos(),
+			pPlayer->GetPosOld(),
+			pTree->GetPosOld(),
+			PLAYER_MIN,
+			TREE_MIN,
+			PLAYER_MAX,
+			TREE_MAX
+		) == true)
+		{ // 木に当たった場合
+
+			// 木との当たり判定
+			pPlayer->TreeHit();
+		}
+	}
+
+	// 位置を適用する
+	pPlayer->SetPos(pos);
+}
+
+//===============================
+// 敵と雪玉の当たり判定
+//===============================
+void collision::EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
+{
+	// ローカル変数宣言
+	CListManager<CEnemy*> list = CEnemy::GetList();
+	CEnemy* pEnemy = nullptr;				// 敵のポインタ
+	int nNum = list.GetNumData();			// 総数
+
+	for (int nCnt = 0; nCnt < nNum; nCnt++)
+	{
+		// 敵のポインタを代入
+		pEnemy = list.GetData(nCnt);
+
+		if (pEnemy->IsDamage() == false &&
+			useful::RectangleCollisionXZ(pos, pEnemy->GetPos(), size, pEnemy->GetFileData().vtxMax, -size, pEnemy->GetFileData().vtxMin) == true)
+		{ // 敵に当たった場合
+
+			// ヒット処理
+			pEnemy->Hit();
+		}
+	}
 }
 
 /*

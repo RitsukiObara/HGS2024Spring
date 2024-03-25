@@ -12,6 +12,7 @@
 #include "snowball.h"
 #include "game.h"
 #include "camera.h"
+#include "collision.h"
 
 //=======================================
 // 定数定義
@@ -22,6 +23,7 @@ namespace
 	const D3DXVECTOR3 INIT_CAMERA_ROT = D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f);		// カメラの初期向き
 	const D3DXVECTOR3 SCALE = D3DXVECTOR3(4.0f, 4.0f, 4.0f);		// 拡大率
 	const float CAMERA_ROT_CORRECT = 0.0000020f;		// カメラの向きの補正処理
+	const D3DXVECTOR3 SNOWBALL_POS = D3DXVECTOR3(0.0f, 100.0f, 0.0f);	// 雪玉の出る位置
 	const char* MODEL = "data\\MODEL\\Player\\player.x";			// モデル
 	const float SPEED = 10.0f;					// 速度
 }
@@ -78,6 +80,9 @@ void CPlayer::Uninit(void)
 //=========================
 void CPlayer::Update(void)
 {
+	// 前回の位置を設定する
+	SetPosOld(GetPos());
+
 	// 操作処理
 	Control();
 
@@ -86,6 +91,9 @@ void CPlayer::Update(void)
 
 	// 射撃処理
 	Shot();
+
+	//木との当たり判定
+	collision::TreeHit(this);
 }
 
 //=========================
@@ -108,6 +116,19 @@ void CPlayer::SetData(void)
 	SetRot(NONE_D3DXVECTOR3);					// 向き
 	SetScale(SCALE);							// 拡大率
 	SetFileData(CManager::Get()->GetXFile()->Regist(MODEL));
+}
+
+//=========================
+// 木とのヒット判定
+//=========================
+void CPlayer::TreeHit(void)
+{
+	if (m_state != STATE_CARRY)
+	{ // 運び状態じゃない場合
+
+		// 運び状態にする
+		m_state = STATE_CARRY;
+	}
 }
 
 //=========================
@@ -199,7 +220,7 @@ void CPlayer::Control(void)
 		pos.z += cosf(fStickRot) * SPEED;
 
 		// 向きを設定する
-		rot.y = fStickRot + D3DX_PI;
+		rot.y = fStickRot;
 	}
 
 	// 位置を向きを適用
@@ -239,6 +260,6 @@ void CPlayer::Shot(void)
 	{ // 射撃する
 
 		// 雪玉の生成
-		CSnowBall::Create(GetPos(), GetRot());
+		CSnowBall::Create(GetPos() + SNOWBALL_POS, GetRot());
 	}
 }

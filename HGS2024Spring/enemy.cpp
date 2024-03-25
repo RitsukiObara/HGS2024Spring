@@ -8,13 +8,20 @@
 #include "enemy.h"
 #include "useful.h"
 
+#include "game.h"
+#include "base.h"
+
 //=======================================
 // 定数定義
 //=======================================
 namespace
 {
-	const D3DXVECTOR3 SCALE = D3DXVECTOR3(2.5f, 2.5f, 2.5f);		// 拡大率
-	const char* MODEL = "data\\MODEL\\ENEMY\\enemy.x";		// 敵のモデル
+	const D3DXVECTOR3 SCALE = D3DXVECTOR3(2.5f, 2.5f, 2.5f);	// 拡大率
+	const char* MODEL = "data\\MODEL\\ENEMY\\enemy.x";			// 敵のモデル
+	const float MOVE_CORRECT = 0.001f;							// 移動量の補正数
+	const int LIFE = 5;											// 体力
+	const D3DXCOLOR DAMAGE_COL = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);		// ダメージの時の色
+	const int DAMAGE_COUNT = 5;				// ダメージ状態のカウント数
 }
 
 //-------------------------------------------
@@ -29,6 +36,9 @@ CEnemy::CEnemy() : CModel(TYPE_PLAYER, PRIORITY_PLAYER)
 {
 	// 全ての値をクリアする
 	m_state = STATE_PROGRESS;		// 状態
+	m_move = NONE_D3DXVECTOR3;		// 移動量
+	m_nLife = LIFE;					// 体力
+	m_bDamage = false;				// ダメージ状況
 
 	// リストに追加する
 	m_list.Regist(this);
@@ -79,7 +89,12 @@ void CEnemy::Update(void)
 	{
 	case CEnemy::STATE_PROGRESS:		// 進行状態
 
+		// 進行状態
+		Progress();
 
+		break;
+
+	case CEnemy::STATE_CATCH:			// キャッチ状態
 
 		break;
 
@@ -95,6 +110,23 @@ void CEnemy::Update(void)
 
 		break;
 	}
+
+	if (m_bDamage == true)
+	{ // ダメージ状況が true の場合
+
+		// ダメージカウントを加算する
+		m_nDamageCount++;
+
+		if (m_nDamageCount >= DAMAGE_COUNT)
+		{ // ダメージカウントが一定数以上になった場合
+
+			// ダメージカウントを0にする
+			m_nDamageCount = 0;
+
+			// ダメージ状況を false にする
+			m_bDamage = false;
+		}
+	}
 }
 
 //=========================
@@ -102,8 +134,18 @@ void CEnemy::Update(void)
 //=========================
 void CEnemy::Draw(void)
 {
-	// 描画処理
-	CModel::Draw();
+	if (m_bDamage == true)
+	{ // ダメージ状況が true の場合
+
+		// 描画処理
+		CModel::Draw(DAMAGE_COL);
+	}
+	else
+	{ // 上記以外
+
+		// 描画処理
+		CModel::Draw();
+	}
 }
 
 //=========================
@@ -117,6 +159,55 @@ void CEnemy::SetData(const D3DXVECTOR3& pos)
 	SetRot(NONE_D3DXVECTOR3);				// 向き
 	SetScale(SCALE);						// 拡大率
 	SetFileData(CManager::Get()->GetXFile()->Regist(MODEL));
+
+	// 全ての値を設定する
+	m_state = STATE_PROGRESS;		// 状態
+	m_nLife = LIFE;					// 体力
+	m_bDamage = false;				// ダメージ状況
+
+	// 拠点のポインタを取得
+	CBase* pBase = CGame::GetBase();
+
+	if (pBase != nullptr)
+	{ // 拠点が存在する場合
+
+		// 移動量の設定処理
+		MoveSet(pBase->GetPos());
+	}
+}
+
+//=========================
+// ヒット処理
+//=========================
+void CEnemy::Hit(void)
+{
+	// 体力を減算する
+	m_nLife--;
+
+	if (m_nLife <= 0)
+	{ // 体力が0以下になった場合
+
+		// 終了処理
+		Uninit();
+
+		// この先の処理を行わない
+		return;
+	}
+	else
+	{ // 上記以外
+
+		// ダメージ状況を true にする
+		m_bDamage = true;				// ダメージ状況
+	}
+}
+
+//=========================
+// ダメージ状況の取得処理
+//=========================
+bool CEnemy::IsDamage(void) const
+{
+	// ダメージ状況を返す
+	return m_bDamage;
 }
 
 //=========================
@@ -181,4 +272,50 @@ CListManager<CEnemy*> CEnemy::GetList(void)
 {
 	// リスト構造の情報を返す
 	return m_list;
+}
+
+//=======================================
+// 移動量の設定処理
+//=======================================
+void CEnemy::MoveSet(const D3DXVECTOR3& posDest)
+{
+	// 位置を取得する
+	D3DXVECTOR3 pos = GetPos();
+
+	// 移動量を設定
+	m_move.x = (posDest.x - pos.x) * MOVE_CORRECT;
+	m_move.z = (posDest.z - pos.z) * MOVE_CORRECT;
+}
+
+//=======================================
+// 進行処理
+//=======================================
+void CEnemy::Progress(void)
+{
+	// 拠点のポインタを取得
+	CBase* pBase = CGame::GetBase();
+
+	if (pBase != nullptr)
+	{ // 拠点が存在する場合
+
+		// 位置を取得する
+		D3DXVECTOR3 posDest = pBase->GetPos();
+		D3DXVECTOR3 pos = GetPos();
+		D3DXVECTOR3 rot = GetRot();
+
+		// 向きを設定する
+		rot.y = atan2f(posDest.x - pos.x, posDest.z - pos.z);
+
+		if (useful::FrameCorrect(posDest.x, &pos.x, m_move.x) == true ||
+			useful::FrameCorrect(posDest.z, &pos.z, m_move.z) == true)
+		{ // 到着した場合
+
+			// キャッチ状態にする
+			m_state = STATE_CATCH;
+		}
+
+		// 位置と向きを適用
+		SetPos(pos);
+		SetRot(rot);
+	}
 }
