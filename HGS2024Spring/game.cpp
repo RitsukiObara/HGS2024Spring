@@ -22,6 +22,7 @@
 #include "objectElevation.h"
 #include "ocean.h"
 #include "map.h"
+#include "mob_tree.h"
 #include "player.h"
 #include "skybox.h"
 
@@ -71,6 +72,8 @@ HRESULT CGame::Init(void)
 
 	// マップの生成
 	CMap::Create();
+
+	CMobTree::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f));
 
 	// プレイヤーの生成
 	CPlayer::Create();

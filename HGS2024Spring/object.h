@@ -51,6 +51,7 @@ public:			// 誰でもアクセスできる
 		TYPE_MAP,				// マップ
 		TYPE_PLAYER,			// プレイヤー
 		TYPE_OCEAN,				// 海
+		TYPE_TREE,				// 木
 		TYPE_MAX				// この列挙型の総数
 	};
 

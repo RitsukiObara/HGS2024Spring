@@ -35,6 +35,9 @@ public:				// 誰でもアクセスできる
 
 private:			// 自分だけアクセスできる
 
+	// メンバ関数
+	void Move(void);		// 移動処理
+
 	// メンバ変数
 	D3DXVECTOR3 m_move;		// 移動量
 };
