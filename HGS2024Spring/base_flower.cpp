@@ -15,14 +15,14 @@
 //=======================================
 namespace
 {
-	const D3DXVECTOR3 FLOWER_SIZE = D3DXVECTOR3(20.0f, 20.0f, 0.0f);		// 花のサイズ
+	const D3DXVECTOR3 FLOWER_SIZE = D3DXVECTOR3(50.0f, 50.0f, 0.0f);		// 花のサイズ
 	const char* TEXTURE = "data\\TEXTURE\\Flower.png";						// テクスチャ
 }
 
 //=========================
 // コンストラクタ
 //=========================
-CBaseFlower::CBaseFlower() : CBillboard(CObject::TYPE_BASEFLOWER, CObject::PRIORITY_ENTITY)
+CBaseFlower::CBaseFlower() : CBillboard(CObject::TYPE_BASEFLOWER, CObject::PRIORITY_EFFECT)
 {
 
 }
@@ -95,7 +95,7 @@ void CBaseFlower::SetData(const D3DXVECTOR3& pos)
 	SetVertex();
 
 	// 色の設定処理
-	SetVtxColor(D3DXCOLOR(1.0f, 0.5f, 1.0f, 1.0f));
+	SetVtxColor(D3DXCOLOR(1.0f, 0.7f, 1.0f, 1.0f));
 
 	// テクスチャの読み込み処理
 	BindTexture(CManager::Get()->GetTexture()->Regist(TEXTURE));

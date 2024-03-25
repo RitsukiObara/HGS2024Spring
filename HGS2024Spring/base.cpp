@@ -19,6 +19,8 @@ namespace
 	const D3DXVECTOR3 POS = D3DXVECTOR3(1100.0f, 0.0f, 1300.0f);		// 位置
 	const char* MODEL = "data\\MODEL\\ayakasi.x";		// モデル
 	const float FLOWERPOINT_HEIGHT = 500.0f;			// 花が咲く高さ
+	const int FLOWERING_POINT = 30;						// 1回で咲く花の数
+	const int MAX_PERCENT = 100;						// 咲き度合の最大数
 }
 
 //=========================
@@ -28,8 +30,9 @@ CBase::CBase() : CModel(TYPE_BASE, PRIORITY_ENTITY)
 {
 	// 全ての値をクリアする
 	m_pPosVtx = nullptr;		// 頂点のポインタ
+	m_nPercent = 0;				// 咲き度合
 	m_nNumVtx = 0;				// 頂点数
-	m_nNowFlowPoint = 0;		// 現在咲いているポイント
+	m_bFlowering = nullptr;		// 現在咲いている箇所
 }
 
 //=========================
@@ -63,6 +66,9 @@ void CBase::Uninit(void)
 {
 	// 開花ポイントを破棄する
 	delete[] m_pPosVtx;
+
+	// 開花状況を開放する
+	delete[] m_bFlowering;
 
 	// 終了
 	CModel::Uninit();
@@ -100,10 +106,9 @@ void CBase::SetData(void)
 	SetScale(NONE_SCALE);			// 拡大率
 	SetFileData(CManager::Get()->GetXFile()->Regist(MODEL));
 
-	// モデルの頂点数を取得
-	int nNumFlowPoint = 0;
-	int nNowPoint = 0;
-	m_nNumVtx = GetFileData().pMesh->GetNumVertices();
+	int nNumFlowPoint = 0;		// 開花する場所の総数
+	int nNowPoint = 0;			// 現在の頂点
+	m_nNumVtx = GetFileData().pMesh->GetNumVertices();	// 総頂点数
 
 	for (int nCnt = 0; nCnt < m_nNumVtx; nCnt++)
 	{
@@ -116,7 +121,9 @@ void CBase::SetData(void)
 	}
 
 	// 全ての値を設定する
+	m_nPercent = 0;				// 咲き度合
 	m_pPosVtx = new D3DXVECTOR3[nNumFlowPoint];	// 開花させる頂点
+	m_bFlowering = new bool[nNumFlowPoint];		// 開花状況
 
 	for (int nCnt = 0; nCnt < m_nNumVtx; nCnt++)
 	{
@@ -125,6 +132,9 @@ void CBase::SetData(void)
 
 			// 開花ポイントを加算する
 			m_pPosVtx[nNowPoint] = GetFileData().vtxPos[nCnt];
+
+			// 開花状況を false にする
+			m_bFlowering[nNowPoint] = false;
 
 			// 現在のポイントを加算する
 			nNowPoint++;
@@ -195,12 +205,38 @@ CBase* CBase::Create(void)
 //=========================
 void CBase::Flowering(void)
 {
-	for (int nCnt = m_nNowFlowPoint; nCnt < m_nNowFlowPoint + 170; nCnt++)
+	for (int nCnt = 0; nCnt < FLOWERING_POINT; nCnt++)
 	{
+		int nRand = rand() % m_nNumVtx;
+		D3DXVECTOR3 shift;
+
+		// ずらす幅を設定
+		shift.x = (float)(rand() % 100 - 50);
+		shift.y = (float)(rand() % 100 - 50);
+		shift.z = (float)(rand() % 100 - 50);
+
 		// 花の生成
-		CBaseFlower::Create(GetPos() + m_pPosVtx[nCnt]);
+		CBaseFlower::Create(GetPos() + shift + m_pPosVtx[nRand]);
 	}
 
-	// 現在咲いているポイントを加算する
-	m_nNowFlowPoint += 170;
+	// 咲き度合を加算する
+	m_nPercent++;
+}
+
+//=========================
+// 咲き度合の設定処理
+//=========================
+void CBase::SetPercent(const int nPercent)
+{
+	// 咲き度合を設定する
+	m_nPercent = nPercent;
+}
+
+//=========================
+// 咲き度合の取得処理
+//=========================
+int CBase::GetPercent(void) const
+{
+	// 咲き度合を返す
+	return m_nPercent;
 }

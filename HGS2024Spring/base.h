@@ -32,6 +32,10 @@ public:					// 誰でもアクセスできる
 
 	void Flowering(void);	// 開花処理
 
+	// セット・ゲット関係
+	void SetPercent(const int nPercent);		// 咲き度合の設定処理
+	int GetPercent(void) const;					// 咲き度合の取得処理
+
 	// 静的メンバ関数
 	static CBase* Create(void);		// 生成処理
 
@@ -39,8 +43,9 @@ private:				// 自分だけアクセスできる
 
 	// メンバ変数
 	D3DXVECTOR3* m_pPosVtx;	// 頂点のポインタ
+	int m_nPercent;			// 咲き度合
 	int m_nNumVtx;			// 頂点数
-	int m_nNowFlowPoint;	// 現在咲いているポイント
+	bool* m_bFlowering;		// 現在咲いている箇所
 };
 
 #endif
