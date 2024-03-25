@@ -18,13 +18,14 @@
 #include "camera.h"
 #include "skybox.h"
 
+#include "result_logo.h"
+
 //--------------------------------------------
 // マクロ定義
 //--------------------------------------------
 namespace
 {
-	const char* CLEAR_TEXTURE = "data\\TEXTURE\\gameclear00.png";		// ゲームクリア
-	const char* GAMEOVER_TEXTURE = "data\\TEXTURE\\gameclear00.png";	// ゲームオーバー
+
 }
 
 //=========================================
@@ -57,6 +58,9 @@ HRESULT CResult::Init(void)
 	// テキスト読み込み処理
 	CMesh::TxtSet();
 
+	// ロゴの生成処理
+	CResultLogo::Create();
+
 	// 成功を返す
 	return S_OK;
 }
@@ -80,8 +84,8 @@ void CResult::Update(void)
 		CManager::Get()->GetInputGamePad()->GetTrigger(CInputGamePad::JOYKEY_START, 0) == true)
 	{ // ENTERキーを押した場合
 
-		// ランキングに遷移する
-		CManager::Get()->GetFade()->SetFade(CScene::MODE_RANKING);
+		// タイトルに遷移する
+		CManager::Get()->GetFade()->SetFade(CScene::MODE_TITLE);
 
 		// この先の処理を行わない
 		return;

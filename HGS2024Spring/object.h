@@ -58,6 +58,7 @@ public:			// 誰でもアクセスできる
 		TYPE_GAUGE,				// 春度ゲージ
 		TYPE_ENEMY,				// 敵
 		TYPE_ENEMYHOME,			// 敵のホーム
+		TYPE_RESULTLOGO,		// リザルトロゴ
 		TYPE_MAX				// この列挙型の総数
 	};
 
