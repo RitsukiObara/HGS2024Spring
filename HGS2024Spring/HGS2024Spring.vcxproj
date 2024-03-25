@@ -157,6 +157,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="anim_reaction.cpp" />
+    <ClCompile Include="base_flower.cpp" />
     <ClCompile Include="blur.cpp" />
     <ClCompile Include="blur_col.cpp" />
     <ClCompile Include="blur_org.cpp" />
@@ -249,6 +250,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="anim_reaction.h" />
+    <ClInclude Include="base_flower.h" />
     <ClInclude Include="blur.h" />
     <ClInclude Include="blur_col.h" />
     <ClInclude Include="blur_org.h" />

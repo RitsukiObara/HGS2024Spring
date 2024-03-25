@@ -321,6 +321,9 @@
     <ClCompile Include="base.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
+    <ClCompile Include="base_flower.cpp">
+      <Filter>Tree</Filter>
+    </ClCompile>
     <ClCompile Include="title_logo.cpp">
       <Filter>Scene\Title</Filter>
     </ClCompile>
@@ -585,6 +588,9 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="base.h">
+      <Filter>Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="base_flower.h">
       <Filter>Tree</Filter>
     </ClInclude>
     <ClInclude Include="title_logo.h">

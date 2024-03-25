@@ -34,6 +34,8 @@ public:					// 誰でもアクセスできる
 
 	void SetData(const D3DXVECTOR3& pos);		// 情報の設定処理
 
+	void SnowBallHit(void);	// 雪玉との衝突時判定
+
 	// 静的メンバ関数
 	static CMobTree* Create(const D3DXVECTOR3& pos);		// 生成処理
 

@@ -131,6 +131,19 @@ void CMobTree::SetData(const D3DXVECTOR3& pos)
 }
 
 //=========================
+// プレイヤーとの衝突時判定
+//=========================
+void CMobTree::SnowBallHit(void)
+{
+	if (m_pLeaf != nullptr)
+	{ // 葉が NULL じゃない場合
+
+		// 雪玉との衝突時判定
+		m_pLeaf->SnowBallHit();
+	}
+}
+
+//=========================
 // 生成処理
 //=========================
 CMobTree* CMobTree::Create(const D3DXVECTOR3& pos)
