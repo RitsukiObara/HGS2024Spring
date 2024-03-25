@@ -15,6 +15,9 @@ TEXTURE = data\TEXTURE\PauseTitle.png		# タイトル
 TEXTURE = data\TEXTURE\shadow.jpg			# 影
 TEXTURE = data\TEXTURE\TimeNumber.png		# 時間の数字
 TEXTURE = data\TEXTURE\TimeDot.png			# 時間の点
+TEXTURE = data\TEXTURE\March.png			# 3月
+TEXTURE = data\TEXTURE\April.png			# 4月
+TEXTURE = data\TEXTURE\May.png				# 5月
 
 # 演出系
 TEXTURE = data\TEXTURE\Platform\danger001.png		# 危険マーク001
