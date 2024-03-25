@@ -29,6 +29,7 @@
 #include "skybox.h"
 #include "gauge.h"
 #include "timer.h"
+#include "CaveatDirection.h"
 
 //--------------------------------------------
 // マクロ定義
@@ -96,6 +97,8 @@ HRESULT CGame::Init(void)
 	CTimer::Create();
 
 	CEnemy::Create(D3DXVECTOR3(-500.0f, 80.0f, 300.0f));
+
+	CCaveatDirection::Create();
 
 	// シーンの初期化
 	CScene::Init();
