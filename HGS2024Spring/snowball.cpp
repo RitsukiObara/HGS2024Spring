@@ -16,7 +16,7 @@
 //=======================================
 namespace
 {
-	const D3DXVECTOR3 SNOWBALL_SIZE = D3DXVECTOR3(30.0f, 30.0f, 0.0f);		// サイズ
+	const D3DXVECTOR3 SNOWBALL_SIZE = D3DXVECTOR3(40.0f, 40.0f, 0.0f);		// サイズ
 	const char* TEXTURE = "data\\TEXTURE\\snow.jpg";		// テクスチャ
 	const float SPEED = 30.0f;			// 速度
 	const int LIFE = 30;				// 寿命

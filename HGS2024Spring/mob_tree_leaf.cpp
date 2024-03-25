@@ -14,7 +14,7 @@
 namespace
 {
 	const D3DXVECTOR3 MAX_SCALE = D3DXVECTOR3(3.0f, 3.0f, 3.0f);	// 拡大率の最大値
-	const D3DXVECTOR3 MIN_SCALE = D3DXVECTOR3(0.1f, 0.1f, 0.1f);	// 拡大率の最小値
+	const D3DXVECTOR3 MIN_SCALE = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// 拡大率の最小値
 	const char* LEAF_MODEL = "data\\MODEL\\leaf.x";					// 葉のモデル
 	const float SCALE_MOVE = 0.005f;			// 拡大率の移動量
 	const D3DXVECTOR3 GET_SCALE_SUB = D3DXVECTOR3(0.1f, 0.1f, 0.1f);	// 拡大率の取得時の減算量
@@ -88,7 +88,7 @@ void CMobTreeLeaf::SetData(const D3DXVECTOR3& pos)
 	SetPos(pos);					// 位置
 	SetPosOld(pos);					// 前回の位置
 	SetRot(NONE_D3DXVECTOR3);		// 向き
-	SetScale(MAX_SCALE);			// 拡大率
+	SetScale(MIN_SCALE);			// 拡大率
 	SetFileData(CManager::Get()->GetXFile()->Regist(LEAF_MODEL));
 }
 
@@ -97,8 +97,15 @@ void CMobTreeLeaf::SetData(const D3DXVECTOR3& pos)
 //=========================
 void CMobTreeLeaf::SnowBallHit(void)
 {
-	// 拡大率を最小にする
-	SetScale(GetScale() - GET_SCALE_SUB);
+	// 拡大率を取得
+	D3DXVECTOR3 scale = GetScale();
+
+	if (scale.x >= MIN_SCALE.x)
+	{ // 拡大率が一定数以上の場合
+
+		// 拡大率を最小にする
+		SetScale(GetScale() - GET_SCALE_SUB);
+	}
 }
 
 //=========================
