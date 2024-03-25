@@ -17,6 +17,7 @@ namespace
 {
 	const D3DXVECTOR3 SNOWBALL_SIZE = D3DXVECTOR3(30.0f, 30.0f, 0.0f);		// サイズ
 	const char* TEXTURE = "data\\TEXTURE\\";		// テクスチャ
+	const float SPEED = 30.0f;			// 速度
 }
 
 //=======================================
@@ -71,6 +72,9 @@ void CSnowBall::Uninit(void)
 //=========================
 void CSnowBall::Update(void)
 {
+	// 移動処理
+	Move();
+
 	// 頂点座標の設定処理
 	SetVertex();
 }
@@ -100,6 +104,11 @@ void CSnowBall::SetData(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot)
 
 	// テクスチャの読み込み処理
 	BindTexture(CManager::Get()->GetTexture()->Regist(TEXTURE));
+
+	// 移動量を設定する
+	m_move.x = sinf(rot.y) * SPEED;
+	m_move.y = 0.0f;
+	m_move.z = cosf(rot.y) * SPEED;
 }
 
 //=========================
@@ -155,4 +164,19 @@ CSnowBall* CSnowBall::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot)
 
 	// 雪玉のポインタを返す
 	return pSnowball;
+}
+
+//=========================
+// 移動処理
+//=========================
+void CSnowBall::Move(void)
+{
+	// 位置を取得
+	D3DXVECTOR3 pos = GetPos();
+
+	// 移動
+	pos += m_move;
+
+	// 位置を適用
+	SetPos(pos);
 }
