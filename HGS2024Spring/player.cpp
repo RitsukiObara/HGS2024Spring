@@ -10,14 +10,19 @@
 #include "useful.h"
 
 #include "snowball.h"
+#include "game.h"
+#include "camera.h"
 
 //=======================================
 // 定数定義
 //=======================================
 namespace
 {
-	const D3DXVECTOR3 POS = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 位置
-	const char* MODEL = "data\\MODEL\\Platform\\Ripple.x";		// モデル
+	const D3DXVECTOR3 INIT_POS = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 位置
+	const D3DXVECTOR3 INIT_CAMERA_ROT = D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f);		// カメラの初期向き
+	const D3DXVECTOR3 SCALE = D3DXVECTOR3(4.0f, 4.0f, 4.0f);		// 拡大率
+	const float CAMERA_ROT_CORRECT = 0.0000020f;		// カメラの向きの補正処理
+	const char* MODEL = "data\\MODEL\\Player\\player.x";			// モデル
 	const float SPEED = 10.0f;					// 速度
 }
 
@@ -49,6 +54,9 @@ HRESULT CPlayer::Init(void)
 		return E_FAIL;
 	}
 
+	// カメラの向き設定
+	CManager::Get()->GetCamera()->SetRot(INIT_CAMERA_ROT);
+
 	// 成功を返す
 	return S_OK;
 }
@@ -60,6 +68,9 @@ void CPlayer::Uninit(void)
 {
 	// 終了
 	CModel::Uninit();
+
+	// プレイヤーの終了処理
+	CGame::DeletePlayer();
 }
 
 //=========================
@@ -67,18 +78,11 @@ void CPlayer::Uninit(void)
 //=========================
 void CPlayer::Update(void)
 {
-	if (CManager::Get()->GetInputGamePad()->GetConnect() == true)
-	{ // コントローラーが繋がっている場合
+	// 操作処理
+	Control();
 
-		// 操作処理
-		Control();
-	}
-	else
-	{ // 上記以外
-
-		// キーボード処理
-		Keyboard();
-	}
+	// カメラの操作処理
+	Camera();
 
 	// 射撃処理
 	Shot();
@@ -99,10 +103,10 @@ void CPlayer::Draw(void)
 void CPlayer::SetData(void)
 {
 	// スクロールの設定処理
-	SetPos(POS);								// 位置
-	SetPosOld(POS);								// 前回の位置
+	SetPos(INIT_POS);							// 位置
+	SetPosOld(INIT_POS);						// 前回の位置
 	SetRot(NONE_D3DXVECTOR3);					// 向き
-	SetScale(NONE_SCALE);						// 拡大率
+	SetScale(SCALE);							// 拡大率
 	SetFileData(CManager::Get()->GetXFile()->Regist(MODEL));
 }
 
@@ -184,6 +188,9 @@ void CPlayer::Control(void)
 		// スティックの向きを設定する
 		fStickRot = atan2f(fStickRotX, fStickRotY);
 
+		// カメラの向きを加算する
+		fStickRot += CManager::Get()->GetCamera()->GetRot().y;
+
 		// 向きの正規化
 		useful::RotNormalize(&fStickRot);
 
@@ -192,7 +199,7 @@ void CPlayer::Control(void)
 		pos.z += cosf(fStickRot) * SPEED;
 
 		// 向きを設定する
-		rot.y = fStickRot;
+		rot.y = fStickRot + D3DX_PI;
 	}
 
 	// 位置を向きを適用
@@ -201,66 +208,25 @@ void CPlayer::Control(void)
 }
 
 //=========================
-// キーボード処理
+// カメラ操作
 //=========================
-void CPlayer::Keyboard(void)
+void CPlayer::Camera(void)
 {
-	// ローカル変数を宣言する
-	D3DXVECTOR3 pos = GetPos();		// 位置
-	D3DXVECTOR3 rot = GetRot();		// 向き
-	float fMoveX = 0.0f;			// X軸の移動量
-	float fMoveZ = 0.0f;			// Z軸の移動量
-	float fStickRot = 0.0f;			// 向き
+	D3DXVECTOR3 CameraRot = CManager::Get()->GetCamera()->GetRot();		// カメラの向きを取得する
+	float fStickRotX, fStickRotY;		// スティックの向き
 
-	if (CManager::Get()->GetInputKeyboard()->GetPress(DIK_W) == true)
-	{ // Wキーを押した場合
+	// 右スティックの傾け度を取得する
+	fStickRotX = CManager::Get()->GetInputGamePad()->GetGameStickRXPress(0);
+	fStickRotY = CManager::Get()->GetInputGamePad()->GetGameStickRYPress(0);
 
-		// Z軸の移動量を設定する
-		fMoveZ = 1.0f;
-	}
+	// カメラの向きを加算する
+	CameraRot.y += (fStickRotX * CAMERA_ROT_CORRECT);
 
-	if (CManager::Get()->GetInputKeyboard()->GetPress(DIK_S) == true)
-	{ // Sキーを押した場合
+	// 向きの正規化
+	useful::RotNormalize(&CameraRot.y);
 
-		// Z軸の移動量を設定する
-		fMoveZ = -1.0f;
-	}
-
-	if (CManager::Get()->GetInputKeyboard()->GetPress(DIK_A) == true)
-	{ // Aキーを押した場合
-
-		// X軸の移動量を設定する
-		fMoveX = -1.0f;
-	}
-
-	if (CManager::Get()->GetInputKeyboard()->GetPress(DIK_D) == true)
-	{ // Dキーを押した場合
-
-		// X軸の移動量を設定する
-		fMoveX = 1.0f;
-	}
-
-	if (fMoveX != 0 ||
-		fMoveZ != 0)
-	{ // 右スティックをどっちかに倒した場合
-
-		// スティックの向きを設定する
-		fStickRot = atan2f(fMoveX, fMoveZ);
-
-		// 向きの正規化
-		useful::RotNormalize(&fStickRot);
-
-		// 移動させる
-		pos.x += sinf(fStickRot) * SPEED;
-		pos.z += cosf(fStickRot) * SPEED;
-
-		// 向きを設定する
-		rot.y = fStickRot;
-	}
-
-	// 位置と向きを設定する
-	SetPos(pos);
-	SetRot(rot);
+	// 向きを適用する
+	CManager::Get()->GetCamera()->SetRot(CameraRot);
 }
 
 //=========================

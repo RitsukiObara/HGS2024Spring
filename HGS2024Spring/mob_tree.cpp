@@ -16,7 +16,7 @@
 namespace
 {
 	const D3DXVECTOR3 SCALE = D3DXVECTOR3(3.0f, 3.0f, 3.0f);	// ägëÂó¶
-	const D3DXVECTOR3 LEAF_SHIFT = D3DXVECTOR3(0.0f, 250.0f, 0.0f);			// ótÇÃÇ∏ÇÁÇ∑ïù
+	const D3DXVECTOR3 LEAF_SHIFT = D3DXVECTOR3(0.0f, 230.0f, 0.0f);			// ótÇÃÇ∏ÇÁÇ∑ïù
 	const char* TREE_MODEL = "data\\MODEL\\wood.x";				// ñÿÇÃÉÇÉfÉã
 }
 

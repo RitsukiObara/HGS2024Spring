@@ -93,8 +93,10 @@ private:		// 自分だけアクセス出来る
 	void MousePosV(void);			// 視点操作処理
 	void MousePosMove(void);		// 視点・注始点操作処理
 
+	void Title(void);				// タイトルカメラ
+
 	void TypeProcess(void);			// カメラの種類ごとの処理
-	void Normal(void);				// 通常カメラ
+	void Chase(void);				// 追跡処理
 	void Vibrate(void);				// 振動処理
 
 	void PosSet(void);				// 位置の設定処理

@@ -17,6 +17,7 @@
 #include "debugproc.h"
 #include "useful.h"
 
+#include "player.h"
 #include "light.h"
 
 //-------------------------------------------
@@ -44,9 +45,8 @@ namespace
 	const float CORRECT_POSV = 0.20f;			// 視点の補正倍率
 
 	// 特殊カメラ関係
-	const float TITLE_HEIGHT = 4000.0f;			// タイトルカメラの高さ
-	const float TITLE_DISTANCE = 8000.0f;		// タイトルカメラの距離
-	const float TITLE_ADD_ROT = 0.005f;			// タイトルカメラの向きの加算数
+	const float POSR_SHIFT_Y = 200.0f;			// 注視点のずらす幅(Y軸)
+	const float POSR_SHIFT = 150.0f;			// 注視点のずらす幅
 }
 
 //=======================
@@ -205,7 +205,7 @@ void CCamera::Set(void)
 	// プロジェクションマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxProjection);
 
-// デバッグ用
+	// デバッグ用
 #ifdef _DEBUG
 
 		// プロジェクションマトリックスを作成(透視投影)
@@ -218,7 +218,7 @@ void CCamera::Set(void)
 		DRAW_MAX_Z										// Z値の最大値
 	);
 
-// リリース用
+	// リリース用
 #else
 
 	// プロジェクションマトリックスを作成(透視投影)
@@ -530,7 +530,7 @@ void CCamera::Move(void)
 
 			m_posR.x += sinf(D3DX_PI * 0.25f + m_rot.y) * POS_SPEED;
 			m_posV.x += sinf(D3DX_PI * 0.25f + m_rot.y) * POS_SPEED;
-			
+
 			m_posR.z += cosf(D3DX_PI * 0.25f + m_rot.y) * POS_SPEED;
 			m_posV.z += cosf(D3DX_PI * 0.25f + m_rot.y) * POS_SPEED;
 		}
@@ -617,7 +617,7 @@ void CCamera::MovePosV(void)
 {
 	if (CManager::Get()->GetInputKeyboard()->GetPress(DIK_Y) == true)
 	{ // Yキーを押した場合
-		
+
 		// 視点を上に動かす
 		m_posV.y += POS_SPEED;
 	}
@@ -867,8 +867,8 @@ void CCamera::TypeProcess(void)
 	{
 	case CCamera::TYPE_NONE:			// 通常
 
-		// 通常処理
-		Normal();
+		// 追跡処理
+		Chase();
 
 		break;
 
@@ -889,19 +889,39 @@ void CCamera::TypeProcess(void)
 }
 
 //=======================
-// 通常カメラ
+// カメラの追跡処理
 //=======================
-void CCamera::Normal(void)
+void CCamera::Chase(void)
 {
-	// 目的の注視点を設定する
-	m_posR.x = -300.0f;
-	m_posR.y = 0.0f;
-	m_posR.z = 0.0f;
+	// ローカル変数宣言
+	CPlayer* pPlayer = CGame::GetPlayer();	// プレイヤーのポインタ
 
-	// 目的の視点を設定する
-	m_posV.x = 0.0f;
-	m_posV.y = 2000.0f;
-	m_posV.z = -1500.0f;
+	if (pPlayer != nullptr)
+	{ // プレイヤーが NULL じゃない場合
+
+		// プレイヤーの情報を取得する
+		D3DXVECTOR3 pos = pPlayer->GetPos();			// 位置
+
+		// 目的の注視点を設定する
+		m_posRDest.x = pos.x + sinf(m_rot.y) * POSR_SHIFT;
+		m_posRDest.y = pos.y + POSR_SHIFT_Y;
+		m_posRDest.z = pos.z + cosf(m_rot.y) * POSR_SHIFT;
+
+		// 目的の視点を設定する
+		m_posVDest.x = m_posRDest.x + sinf(m_rot.y) * sinf(m_rot.x) * -m_Dis;
+		m_posVDest.y = m_posRDest.y + cosf(m_rot.x) * -m_Dis;
+		m_posVDest.z = m_posRDest.z + cosf(m_rot.y) * sinf(m_rot.x) * -m_Dis;
+
+		// 注視点を補正
+		m_posR.x += (m_posRDest.x - m_posR.x) * CORRECT_POSR;
+		m_posR.y += (m_posRDest.y - m_posR.y) * CORRECT_POSR;
+		m_posR.z += (m_posRDest.z - m_posR.z) * CORRECT_POSR;
+
+		// 視点を補正
+		m_posV.x += (m_posVDest.x - m_posV.x) * CORRECT_POSV;
+		m_posV.y += (m_posVDest.y - m_posV.y) * CORRECT_POSV;
+		m_posV.z += (m_posVDest.z - m_posV.z) * CORRECT_POSV;
+	}
 }
 
 //=======================
