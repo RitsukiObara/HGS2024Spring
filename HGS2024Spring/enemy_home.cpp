@@ -16,7 +16,7 @@ namespace
 {
 	const D3DXVECTOR3 SCALE = D3DXVECTOR3(2.0f, 2.0f, 2.0f);			// Šg‘å—¦
 	const char* MODEL = "data\\MODEL\\Enemy\\enemy_base.x";				// “G‚Ìƒz[ƒ€
-	const int ENEMY_INTERVAL = 600;			// “G‚Ìo‚éŠÔŠu
+	const int ENEMY_INTERVAL = 800;			// “G‚Ìo‚éŠÔŠu
 	const float ENEMY_HEIGHT = 100.0f;		// “G‚Ì‚‚³
 }
 
