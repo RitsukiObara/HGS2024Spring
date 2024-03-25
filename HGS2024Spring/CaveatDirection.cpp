@@ -82,8 +82,6 @@ void CCaveatDirection::Uninit()
 void CCaveatDirection::Update()
 {
 
-	move();
-
 	CObject2D::Update();
 }
 
@@ -110,25 +108,4 @@ CCaveatDirection* CCaveatDirection::Create()
 	if (FAILED(Polygon->Init())) { return nullptr; }
 
 	return Polygon;
-}
-
-//==========================================
-//  XVˆ—
-//==========================================
-void CCaveatDirection::move()
-{
-	D3DXVECTOR3 pos = GetPos();
-
-
-	if (pos.x <= POLYGON_STOP_POS)
-	{
-		pos.x += 10.0f;
-
-		SetPos(pos);
-	}
-
-	else
-	{
-		pos.x = POLYGON_STOP_POS;
-	}
 }

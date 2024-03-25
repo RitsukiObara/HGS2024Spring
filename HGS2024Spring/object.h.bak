@@ -59,8 +59,9 @@ public:			// 誰でもアクセスできる
 		TYPE_ENEMY,				// 敵
 		TYPE_ENEMYHOME,			// 敵のホーム
 		TYPE_RESULTLOGO,		// リザルトロゴ
-		TYPE_TUTORIAL,			// チュートリアル画像
-		TYPE_MAX				// この列挙型の総数
+		TYPE_MAX			<ClInclude Include="tutorial_polygon.h">
+      <Filter>Scene\Tutorial</Filter>
+    </ClInclude>	// この列挙型の総数
 	};
 
 	// 列挙型定義(次元)

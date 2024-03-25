@@ -625,7 +625,7 @@
     </ClInclude>
     <ClInclude Include="result_logo.h">
       <Filter>Scene\Result</Filter>
-    </ClInclude>
+      </ClInclude>
     <ClInclude Include="tutorial_polygon.h">
       <Filter>Scene\Tutorial</Filter>
     </ClInclude>

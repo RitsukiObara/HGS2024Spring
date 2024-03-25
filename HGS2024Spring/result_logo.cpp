@@ -1,28 +1,32 @@
 //=======================================
 //
-// 拠点の花処理[base_flower.cpp]
+// 2Dエフェクトのメイン処理[effect2D.cpp]
 // Author 小原立暉
 //
 //=======================================
 #include "manager.h"
-#include "base_flower.h"
+#include "result_logo.h"
 #include "renderer.h"
 #include "texture.h"
 #include "useful.h"
+
+#include "game.h"
 
 //=======================================
 // 定数定義
 //=======================================
 namespace
 {
-	const D3DXVECTOR3 FLOWER_SIZE = D3DXVECTOR3(50.0f, 50.0f, 0.0f);		// 花のサイズ
-	const char* TEXTURE = "data\\TEXTURE\\Flower.png";						// テクスチャ
+	const D3DXVECTOR3 POS = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f);		// 位置
+	const D3DXVECTOR3 POLY_SIZE = D3DXVECTOR3(530.0f, 140.0f, 0.0f);		// サイズ
+	const char* CLEAR_TEXTURE = "data\\TEXTURE\\gameclear00.png";		// ゲームクリア
+	const char* GAMEOVER_TEXTURE = "data\\TEXTURE\\gameover00.png";	// ゲームオーバー
 }
 
 //=========================
 // コンストラクタ
 //=========================
-CBaseFlower::CBaseFlower() : CBillboard(CObject::TYPE_BASEFLOWER, CObject::PRIORITY_EFFECT)
+CResultLogo::CResultLogo() : CObject2D(CObject2D::TYPE_RESULTLOGO, CObject::PRIORITY_UI)
 {
 
 }
@@ -30,7 +34,7 @@ CBaseFlower::CBaseFlower() : CBillboard(CObject::TYPE_BASEFLOWER, CObject::PRIOR
 //=========================
 // デストラクタ
 //=========================
-CBaseFlower::~CBaseFlower()
+CResultLogo::~CResultLogo()
 {
 
 }
@@ -38,9 +42,9 @@ CBaseFlower::~CBaseFlower()
 //=========================
 // 初期化処理
 //=========================
-HRESULT CBaseFlower::Init(void)
+HRESULT CResultLogo::Init(void)
 {
-	if (FAILED(CBillboard::Init()))
+	if (FAILED(CObject2D::Init()))
 	{ // 初期化に失敗した場合
 
 		// 失敗を返す
@@ -54,16 +58,16 @@ HRESULT CBaseFlower::Init(void)
 //=========================
 // 終了処理
 //=========================
-void CBaseFlower::Uninit(void)
+void CResultLogo::Uninit(void)
 {
 	// 終了
-	CBillboard::Uninit();
+	CObject2D::Uninit();
 }
 
 //=========================
 // 更新処理
 //=========================
-void CBaseFlower::Update(void)
+void CResultLogo::Update(void)
 {
 
 }
@@ -71,46 +75,65 @@ void CBaseFlower::Update(void)
 //=========================
 // 描画処理
 //=========================
-void CBaseFlower::Draw(void)
+void CResultLogo::Draw(void)
 {
 	// 描画処理
-	CBillboard::DrawLightOff();
+	CObject2D::Draw();
 }
 
 //=========================
 // 情報の設定処理
 //=========================
-void CBaseFlower::SetData(const D3DXVECTOR3& pos)
+void CResultLogo::SetData(void)
 {
-	// 情報の設定処理
-	SetPos(pos);			// 位置
-	SetPosOld(pos);			// 前回の位置
-	SetSize(FLOWER_SIZE);	// サイズ
-	SetEnableLookY(false);	// Y軸状況
+	// スクロールの設定処理
+	SetPos(POS);				// 位置設定
+	SetRot(NONE_D3DXVECTOR3);	// 向き設定
+	SetSize(POLY_SIZE);			// サイズ設定
+	SetLength();				// 長さ設定
+	SetAngle();					// 方向設定
 
 	// 頂点情報の初期化
 	SetVertex();
 
-	// 色の設定処理
-	SetVtxColor(D3DXCOLOR(1.0f, 0.7f, 1.0f, 1.0f));
+	switch (CGame::GetState())
+	{
+	case CGame::STATE_CLEAR:
 
-	// テクスチャの読み込み処理
-	BindTexture(CManager::Get()->GetTexture()->Regist(TEXTURE));
+		// テクスチャの読み込み処理
+		BindTexture(CManager::Get()->GetTexture()->Regist(CLEAR_TEXTURE));
+
+		break;
+
+	case CGame::STATE_GAMEOVER:
+
+		// テクスチャの読み込み処理
+		BindTexture(CManager::Get()->GetTexture()->Regist(GAMEOVER_TEXTURE));
+
+		break;
+
+	default:
+
+		// 停止
+		assert(false);
+
+		break;
+	}
 }
 
 //=========================
 // 生成処理
 //=========================
-CBaseFlower* CBaseFlower::Create(const D3DXVECTOR3& pos)
+CResultLogo* CResultLogo::Create(void)
 {
 	// ローカルオブジェクトを生成
-	CBaseFlower* pBaseFlower = nullptr;	// プレイヤーのインスタンスを生成
+	CResultLogo* pLogo = nullptr;	// プレイヤーのインスタンスを生成
 
-	if (pBaseFlower == nullptr)
+	if (pLogo == nullptr)
 	{ // オブジェクトが NULL の場合
 
 		// オブジェクトを生成
-		pBaseFlower = new CBaseFlower;
+		pLogo = new CResultLogo;
 	}
 	else
 	{ // オブジェクトが NULL じゃない場合
@@ -122,11 +145,11 @@ CBaseFlower* CBaseFlower::Create(const D3DXVECTOR3& pos)
 		return nullptr;
 	}
 
-	if (pBaseFlower != nullptr)
+	if (pLogo != nullptr)
 	{ // オブジェクトが NULL じゃない場合
 
 		// 初期化処理
-		if (FAILED(pBaseFlower->Init()))
+		if (FAILED(pLogo->Init()))
 		{ // 初期化に失敗した場合
 
 			// 停止
@@ -137,7 +160,7 @@ CBaseFlower* CBaseFlower::Create(const D3DXVECTOR3& pos)
 		}
 
 		// 情報の設定処理
-		pBaseFlower->SetData(pos);
+		pLogo->SetData();
 	}
 	else
 	{ // オブジェクトが NULL の場合
@@ -150,5 +173,5 @@ CBaseFlower* CBaseFlower::Create(const D3DXVECTOR3& pos)
 	}
 
 	// オブジェクト2Dのポインタを返す
-	return pBaseFlower;
+	return pLogo;
 }
