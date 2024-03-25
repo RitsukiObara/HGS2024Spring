@@ -50,6 +50,7 @@ public:			// 誰でもアクセスできる
 		TYPE_ANIMREACTION,		// アニメリアクション
 		TYPE_MAP,				// マップ
 		TYPE_PLAYER,			// プレイヤー
+		TYPE_OCEAN,				// 海
 		TYPE_MAX				// この列挙型の総数
 	};
 

@@ -20,6 +20,7 @@
 #include "sound.h"
 
 #include "objectElevation.h"
+#include "ocean.h"
 #include "map.h"
 #include "player.h"
 #include "skybox.h"
@@ -65,7 +66,10 @@ HRESULT CGame::Init(void)
 	// スカイボックスの生成処理
 	//CSkyBox::Create();
 
-	// マップの生成処理
+	// 海の生成
+	COcean::Create();
+
+	// マップの生成
 	CMap::Create();
 
 	// プレイヤーの生成
