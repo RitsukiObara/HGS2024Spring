@@ -336,6 +336,9 @@
     <ClCompile Include="enemy_home.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="tutorial_polygon.cpp">
+      <Filter>Scene\Tutorial</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -610,6 +613,9 @@
     </ClInclude>
     <ClInclude Include="enemy_home.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="tutorial_polygon.h">
+      <Filter>Scene\Tutorial</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

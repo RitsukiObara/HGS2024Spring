@@ -11,9 +11,15 @@
 #include "tutorial.h"
 #include "fade.h"
 #include "renderer.h"
+#include "tutorial_polygon.h"
 
 // マクロ定義
 #define TRANS_COUNT				(120)									// 遷移までのカウント数
+
+//==========================================
+//  静的メンバ変数宣言
+//==========================================
+CTutorialPolygon* CTutorial::m_pPolygon = nullptr;
 
 //=========================================
 // コンストラクタ
@@ -40,6 +46,9 @@ HRESULT CTutorial::Init(void)
 	// シーンの初期化
 	CScene::Init();
 
+	// 画像を生成
+	m_pPolygon = CTutorialPolygon::Create();
+
 	// 全ての値をクリアする
 	m_nEndCount = 0;			// 終了までのカウント
 
@@ -52,6 +61,12 @@ HRESULT CTutorial::Init(void)
 //=============================================
 void CTutorial::Uninit(void)
 {
+	// ポリゴンの終了
+	if (m_pPolygon != nullptr)
+	{
+		m_pPolygon = nullptr;
+	}
+
 	// 終了処理
 	CScene::Uninit();
 }
@@ -64,7 +79,7 @@ void CTutorial::Update(void)
 	// 終了カウントを加算する
 	m_nEndCount++;
 
-	if (m_nEndCount >= TRANS_COUNT)
+	if (m_nEndCount >= TRANS_COUNT && m_pPolygon->GetEnd())
 	{ // スキップ時または、終了時の場合
 
 		// ゲームモードにする

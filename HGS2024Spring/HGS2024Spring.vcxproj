@@ -248,6 +248,7 @@
     <ClCompile Include="title.cpp" />
     <ClCompile Include="title_logo.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="tutorial_polygon.cpp" />
     <ClCompile Include="useful.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -341,6 +342,7 @@
     <ClInclude Include="title.h" />
     <ClInclude Include="title_logo.h" />
     <ClInclude Include="tutorial.h" />
+    <ClInclude Include="tutorial_polygon.h" />
     <ClInclude Include="useful.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
