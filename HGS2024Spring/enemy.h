@@ -40,6 +40,11 @@ public:					// 誰でもアクセスできる
 
 	void SetData(const D3DXVECTOR3& pos);		// 情報の設定処理
 
+	void Hit(void);			// ヒット処理
+
+	// セット・ゲット関係
+	bool IsDamage(void) const;		// ダメージ状況の取得処理
+
 	// 静的メンバ関数
 	static CEnemy* Create(const D3DXVECTOR3& pos);	// 生成処理
 
@@ -54,6 +59,9 @@ private:				// 自分だけアクセスできる
 	// メンバ変数
 	D3DXVECTOR3 m_move;		// 移動量
 	STATE m_state;			// 状態
+	int m_nLife;			// 体力
+	int m_nDamageCount;		// ダメージカウント中
+	bool m_bDamage;			// ダメージ状況
 
 	// 静的メンバ変数
 	static CListManager<CEnemy*> m_list;		// リスト情報

@@ -6,6 +6,7 @@
 //=======================================
 #include "manager.h"
 #include "snowball.h"
+#include "collision.h"
 #include "renderer.h"
 #include "texture.h"
 #include "useful.h"
@@ -16,8 +17,9 @@
 namespace
 {
 	const D3DXVECTOR3 SNOWBALL_SIZE = D3DXVECTOR3(30.0f, 30.0f, 0.0f);		// サイズ
-	const char* TEXTURE = "data\\TEXTURE\\";		// テクスチャ
+	const char* TEXTURE = "data\\TEXTURE\\snow.jpg";		// テクスチャ
 	const float SPEED = 30.0f;			// 速度
+	const int LIFE = 180;				// 寿命
 }
 
 //-------------------------------------------
@@ -28,10 +30,11 @@ CListManager<CSnowBall*> CSnowBall::m_list = {};			// リスト情報
 //=========================
 // コンストラクタ
 //=========================
-CSnowBall::CSnowBall() : CBillboard(CObject::TYPE_EFFECT, CObject::PRIORITY_EFFECT)
+CSnowBall::CSnowBall() : CBillboard(CObject::TYPE_SNOWBALL, CObject::PRIORITY_ENTITY)
 {
 	// 全ての値をクリアする
 	m_move = NONE_D3DXVECTOR3;		// 移動量
+	m_nLife = LIFE;					// 寿命
 
 	// リストに追加する
 	m_list.Regist(this);
@@ -78,11 +81,27 @@ void CSnowBall::Uninit(void)
 //=========================
 void CSnowBall::Update(void)
 {
+	// 寿命を下げる
+	m_nLife--;
+
 	// 移動処理
 	Move();
 
+	if (m_nLife <= 0)
+	{ // 寿命が 0 以下になった場合
+
+		// 終了処理
+		Uninit();
+
+		// この先の処理を行わない
+		return;
+	}
+
 	// 頂点座標の設定処理
 	SetVertex();
+
+	// 敵との当たり判定
+	collision::EnemyToSnowBallHit(GetPos(), GetSize());
 }
 
 //=========================
@@ -90,8 +109,21 @@ void CSnowBall::Update(void)
 //=========================
 void CSnowBall::Draw(void)
 {
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::Get()->GetRenderer()->GetDevice();
+
+	//αブレンディングを加算処理に設定
+	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+
 	// 描画処理
 	CBillboard::DrawLightOff();
+
+	//αブレンディングを元に戻す
+	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 }
 
 //=========================
