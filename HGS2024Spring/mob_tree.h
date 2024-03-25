@@ -11,6 +11,7 @@
 // インクルードファイル
 //***********************************
 #include "model.h"
+#include "list_manager.h"
 
 // 前方宣言
 class CMobTreeLeaf;		// モブ木の葉
@@ -36,10 +37,15 @@ public:					// 誰でもアクセスできる
 	// 静的メンバ関数
 	static CMobTree* Create(const D3DXVECTOR3& pos);		// 生成処理
 
+	static CListManager<CMobTree*> GetList(void);			// リストの取得処理
+
 private:				// 自分だけアクセスできる
 
 	// メンバ変数
 	CMobTreeLeaf* m_pLeaf;		// 葉っぱの情報
+
+	// 静的メンバ変数
+	static CListManager<CMobTree*> m_list;		// リスト情報
 };
 
 #endif

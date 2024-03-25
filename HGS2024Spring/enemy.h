@@ -11,6 +11,7 @@
 // インクルードファイル
 //***********************************
 #include "model.h"
+#include "list_manager.h"
 
 //-----------------------------------
 // クラス定義(CEnemy)
@@ -18,6 +19,14 @@
 class CEnemy : public CModel
 {
 public:					// 誰でもアクセスできる
+
+	// 列挙型定義
+	enum STATE
+	{
+		STATE_PROGRESS = 0,		// 進行状態
+		STATE_RETURN,			// 帰還状態
+		STATE_MAX				// この列挙型の総数
+	};
 
 	CEnemy();				// コンストラクタ
 	~CEnemy();				// デストラクタ
@@ -33,8 +42,15 @@ public:					// 誰でもアクセスできる
 	// 静的メンバ関数
 	static CEnemy* Create(const D3DXVECTOR3& pos);		// 生成処理
 
+	static CListManager<CEnemy*> GetList(void);			// リストの取得処理
+
 private:				// 自分だけアクセスできる
 
+	// メンバ変数
+	STATE m_state;		// 状態
+
+	// 静的メンバ変数
+	static CListManager<CEnemy*> m_list;		// リスト情報
 };
 
 #endif

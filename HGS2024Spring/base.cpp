@@ -1,46 +1,37 @@
 //=======================================
 //
-// モブ木のメイン処理[mob_tree.cpp]
+// 拠点のメイン処理[base.cpp]
 // Author 小原立暉
 //
 //=======================================
 #include "manager.h"
-#include "mob_tree.h"
+#include "base.h"
 #include "useful.h"
 
-#include "mob_tree_leaf.h"
+#include "game.h"
 
 //=======================================
 // 定数定義
 //=======================================
 namespace
 {
-	const D3DXVECTOR3 SCALE = D3DXVECTOR3(3.0f, 3.0f, 3.0f);	// 拡大率
-	const D3DXVECTOR3 LEAF_SHIFT = D3DXVECTOR3(0.0f, 230.0f, 0.0f);			// 葉のずらす幅
-	const char* TREE_MODEL = "data\\MODEL\\wood.x";				// 木のモデル
+	const D3DXVECTOR3 POS = D3DXVECTOR3(1100.0f, 0.0f, 1300.0f);		// 位置
+	const D3DXVECTOR3 SCALE = D3DXVECTOR3(7.0f, 7.0f, 7.0f);		// 拡大率
+	const char* MODEL = "data\\MODEL\\wood.x";		// モデル
 }
-
-//-------------------------------------------
-// 静的メンバ変数宣言
-//-------------------------------------------
-CListManager<CMobTree*> CMobTree::m_list = {};			// リスト情報
 
 //=========================
 // オーバーロードコンストラクタ
 //=========================
-CMobTree::CMobTree() : CModel(TYPE_TREE, PRIORITY_ENTITY)
+CBase::CBase() : CModel(TYPE_BASE, PRIORITY_ENTITY)
 {
-	// 全ての値をクリアする
-	m_pLeaf = nullptr;		// 葉のモデル
 
-	// リストに追加する
-	m_list.Regist(this);
 }
 
 //=========================
 // デストラクタ
 //=========================
-CMobTree::~CMobTree()
+CBase::~CBase()
 {
 
 }
@@ -48,7 +39,7 @@ CMobTree::~CMobTree()
 //=========================
 // 初期化処理
 //=========================
-HRESULT CMobTree::Init(void)
+HRESULT CBase::Init(void)
 {
 	if (FAILED(CModel::Init()))
 	{ // 初期化に失敗した場合
@@ -64,85 +55,58 @@ HRESULT CMobTree::Init(void)
 //=========================
 // 終了処理
 //=========================
-void CMobTree::Uninit(void)
+void CBase::Uninit(void)
 {
-	if (m_pLeaf != nullptr)
-	{ // 葉が NULL じゃない場合
-
-		// 終了処理
-		m_pLeaf->Uninit();
-		m_pLeaf = nullptr;
-	}
-
 	// 終了
 	CModel::Uninit();
 
-	// 引き抜き処理
-	m_list.Pull(this);
+	// 拠点のNULL化処理
+	CGame::DeleteBase();
 }
 
 //=========================
 // 更新処理
 //=========================
-void CMobTree::Update(void)
+void CBase::Update(void)
 {
-	if (m_pLeaf != nullptr)
-	{ // 葉っぱが NULL じゃない場合
 
-		// 更新処理
-		m_pLeaf->Update();
-	}
 }
 
 //=========================
 // 描画処理
 //=========================
-void CMobTree::Draw(void)
+void CBase::Draw(void)
 {
 	// 描画処理
 	CModel::Draw();
-
-	if (m_pLeaf != nullptr)
-	{ // 葉が NULL じゃない場合
-
-		// 描画処理
-		m_pLeaf->Draw();
-	}
 }
 
 //=========================
 // 情報の設定処理
 //=========================
-void CMobTree::SetData(const D3DXVECTOR3& pos)
+void CBase::SetData(void)
 {
 	// スクロールの設定処理
-	SetPos(pos);					// 位置
-	SetPosOld(pos);					// 前回の位置
+	SetPos(POS);					// 位置
+	SetPosOld(POS);					// 前回の位置
 	SetRot(NONE_D3DXVECTOR3);		// 向き
 	SetScale(SCALE);				// 拡大率
-	SetFileData(CManager::Get()->GetXFile()->Regist(TREE_MODEL));
-
-	if (m_pLeaf == nullptr)
-	{ // 葉が NULL の場合
-
-		// 葉を生成
-		m_pLeaf = CMobTreeLeaf::Create(pos + LEAF_SHIFT);
-	}
+	SetFileData(CManager::Get()->GetXFile()->Regist(MODEL));
 }
 
 //=========================
 // 生成処理
 //=========================
-CMobTree* CMobTree::Create(const D3DXVECTOR3& pos)
+CBase* CBase::Create(void)
 {
 	// ローカルオブジェクトを生成
-	CMobTree* pTree = nullptr;	// 木のインスタンスを生成
+	CBase* pTree = nullptr;	// 木のインスタンスを生成
 
 	if (pTree == nullptr)
 	{ // オブジェクトが NULL の場合
 
 		// オブジェクトを生成
-		pTree = new CMobTree;
+		pTree = new CBase;
 	}
 	else
 	{ // オブジェクトが NULL じゃない場合
@@ -169,7 +133,7 @@ CMobTree* CMobTree::Create(const D3DXVECTOR3& pos)
 		}
 
 		// 情報の設定処理
-		pTree->SetData(pos);
+		pTree->SetData();
 	}
 	else
 	{ // オブジェクトが NULL の場合
@@ -183,13 +147,4 @@ CMobTree* CMobTree::Create(const D3DXVECTOR3& pos)
 
 	// 木のポインタを返す
 	return pTree;
-}
-
-//=======================================
-// リストの取得処理
-//=======================================
-CListManager<CMobTree*> CMobTree::GetList(void)
-{
-	// リスト構造の情報を返す
-	return m_list;
 }
