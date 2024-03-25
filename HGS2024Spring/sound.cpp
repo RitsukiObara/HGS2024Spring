@@ -12,7 +12,7 @@
 CSound::SOUNDINFO CSound::m_aSoundInfo[CSound::SOUND_LABEL_MAX] =
 {
 	{ "data\\BGM\\TitleBGM.wav",-1 },		// タイトルBGM
-	{ "data\\BGM\\GameBGM.wav",-1 },		// ゲームBGM
+	{ "data\\BGM\\Game.wav",-1 },			// ゲームBGM
 	{ "data\\BGM\\ResultBGM.wav",-1 },		// リザルトBGM
 	{ "data\\BGM\\RankingBGM.wav",-1 },		// ランキングBGM
 	{ "data\\SE\\Run.wav",0 },				// 走行音
