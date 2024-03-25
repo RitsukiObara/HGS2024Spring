@@ -20,6 +20,10 @@
 #include "sound.h"
 
 #include "objectElevation.h"
+#include "ocean.h"
+#include "map.h"
+#include "mob_tree.h"
+#include "player.h"
 #include "skybox.h"
 
 //--------------------------------------------
@@ -60,21 +64,19 @@ CGame::~CGame()
 //=========================================
 HRESULT CGame::Init(void)
 {
-	// テキスト読み込み処理
-	CElevation::TxtSet("data\\TXT\\Elevation.txt");
-
-	// メッシュのテキスト読み込み
-	//CMesh::TxtSet();
-
-	//if (m_pField == NULL)
-	//{ // フィールドへのポインタが NULL の場合
-
-	//	// フィールドの設定処理
-	//	m_pField = CField::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f));
-	//}
-
 	// スカイボックスの生成処理
-	CSkyBox::Create();
+	//CSkyBox::Create();
+
+	// 海の生成
+	COcean::Create();
+
+	// マップの生成
+	CMap::Create();
+
+	CMobTree::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f));
+
+	// プレイヤーの生成
+	CPlayer::Create();
 
 	// シーンの初期化
 	CScene::Init();
@@ -143,17 +145,17 @@ void CGame::Update(void)
 		break;
 	}
 
-	if (CManager::Get()->GetInputKeyboard()->GetTrigger(DIK_RETURN) == true ||
-		CManager::Get()->GetInputGamePad()->GetTrigger(CInputGamePad::JOYKEY_START, 0) == true ||
-		CManager::Get()->GetInputGamePad()->GetTrigger(CInputGamePad::JOYKEY_A, 0) == true)
-	{ // ENTERキーを押した場合
+	//if (CManager::Get()->GetInputKeyboard()->GetTrigger(DIK_RETURN) == true ||
+	//	CManager::Get()->GetInputGamePad()->GetTrigger(CInputGamePad::JOYKEY_START, 0) == true ||
+	//	CManager::Get()->GetInputGamePad()->GetTrigger(CInputGamePad::JOYKEY_A, 0) == true)
+	//{ // ENTERキーを押した場合
 
-		// チュートリアルに遷移する
-		CManager::Get()->GetFade()->SetFade(CScene::MODE_RESULT);
+	//	// リザルトに遷移する
+	//	CManager::Get()->GetFade()->SetFade(CScene::MODE_RESULT);
 
-		// この先の処理を行わない
-		return;
-	}
+	//	// この先の処理を行わない
+	//	return;
+	//}
 
 	if (m_bPause == true)
 	{ // ポーズ状況が true の場合

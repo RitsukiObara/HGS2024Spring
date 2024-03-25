@@ -48,6 +48,10 @@ public:			// 誰でもアクセスできる
 		TYPE_EFFECTMODEL,		// モデルエフェクト
 		TYPE_LOCUSMODEL,		// モデル残像
 		TYPE_ANIMREACTION,		// アニメリアクション
+		TYPE_MAP,				// マップ
+		TYPE_PLAYER,			// プレイヤー
+		TYPE_OCEAN,				// 海
+		TYPE_TREE,				// 木
 		TYPE_MAX				// この列挙型の総数
 	};
 

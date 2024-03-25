@@ -52,6 +52,15 @@
     <Filter Include="UI">
       <UniqueIdentifier>{e584ab97-e513-4dfc-aa7c-a4dd75e9e89f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{2f98164d-23c4-4f2f-9421-ea330e24654c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{50842704-c336-484c-9dd1-f7c9698835b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tree">
+      <UniqueIdentifier>{cd5205d1-090e-458a-8832-b4f332637992}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -284,6 +293,24 @@
     </ClCompile>
     <ClCompile Include="time.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="map.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ocean.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="snowball.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="mob_tree.cpp">
+      <Filter>Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="mob_tree_leaf.cpp">
+      <Filter>Tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -520,6 +547,24 @@
     </ClInclude>
     <ClInclude Include="time.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ocean.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="snowball.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="mob_tree.h">
+      <Filter>Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="mob_tree_leaf.h">
+      <Filter>Tree</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
