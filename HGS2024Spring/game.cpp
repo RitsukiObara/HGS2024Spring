@@ -24,6 +24,7 @@
 #include "map.h"
 #include "mob_tree.h"
 #include "player.h"
+#include "enemy.h"
 #include "skybox.h"
 
 //--------------------------------------------
@@ -79,6 +80,8 @@ HRESULT CGame::Init(void)
 
 	// プレイヤーの生成
 	m_pPlayer = CPlayer::Create();
+
+	CEnemy::Create(D3DXVECTOR3(-500.0f, 80.0f, 300.0f));
 
 	// シーンの初期化
 	CScene::Init();

@@ -1,11 +1,11 @@
 //===================================
 //
-// プレイヤーヘッダー[player.h]
+// 敵ヘッダー[enemy.h]
 // Author 小原立暉
 //
 //===================================
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+#ifndef _ENEMY_H_
+#define _ENEMY_H_
 
 //***********************************
 // インクルードファイル
@@ -13,14 +13,14 @@
 #include "model.h"
 
 //-----------------------------------
-// クラス定義(CPlayer)
+// クラス定義(CEnemy)
 //-----------------------------------
-class CPlayer : public CModel
+class CEnemy : public CModel
 {
 public:					// 誰でもアクセスできる
 
-	CPlayer();				// コンストラクタ
-	~CPlayer();				// デストラクタ
+	CEnemy();				// コンストラクタ
+	~CEnemy();				// デストラクタ
 
 	// メンバ関数
 	HRESULT Init(void);		// 初期化処理
@@ -28,17 +28,13 @@ public:					// 誰でもアクセスできる
 	void Update(void);		// 更新処理
 	void Draw(void);		// 描画処理
 
-	void SetData(void);		// 情報の設定処理
+	void SetData(const D3DXVECTOR3& pos);		// 情報の設定処理
 
 	// 静的メンバ関数
-	static CPlayer* Create(void);		// 生成処理
+	static CEnemy* Create(const D3DXVECTOR3& pos);		// 生成処理
 
 private:				// 自分だけアクセスできる
 
-	// メンバ関数
-	void Control(void);		// 操作処理
-	void Keyboard(void);	// キーボード処理
-	void Shot(void);		// 射撃処理
 };
 
 #endif

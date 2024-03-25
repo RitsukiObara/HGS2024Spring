@@ -13,6 +13,7 @@
 // 定数定義
 namespace
 {
+	const D3DXVECTOR3 POS = D3DXVECTOR3(0.0f, -5.0f, 0.0f);					// 位置
 	const D3DXVECTOR3 OCEAN_SIZE = D3DXVECTOR3(5000.0f, 0.0f, 5000.0f);		// サイズ
 	const char* TEXTURE = "data\\TEXTURE\\Ocean.png";						// テクスチャ
 }
@@ -91,10 +92,10 @@ void COcean::Draw(void)
 void COcean::SetData(void)
 {
 	// スクロールの設定処理
-	SetPos(NONE_D3DXVECTOR3);		// 位置設定
-	SetPosOld(NONE_D3DXVECTOR3);	// 位置設定
-	SetRot(NONE_D3DXVECTOR3);		// 向き設定
-	SetSize(OCEAN_SIZE);			// サイズ設定
+	SetPos(POS);					// 位置
+	SetPosOld(NONE_D3DXVECTOR3);	// 前回の位置
+	SetRot(NONE_D3DXVECTOR3);		// 向き
+	SetSize(OCEAN_SIZE);			// サイズ
 
 	// テクスチャの割り当て処理
 	BindTexture(CManager::Get()->GetTexture()->Regist(TEXTURE));
