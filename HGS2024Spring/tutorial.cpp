@@ -14,7 +14,7 @@
 #include "tutorial_polygon.h"
 
 // マクロ定義
-#define TRANS_COUNT				(120)									// 遷移までのカウント数
+#define TRANS_COUNT				(260)									// 遷移までのカウント数
 
 //==========================================
 //  静的メンバ変数宣言
@@ -76,8 +76,12 @@ void CTutorial::Uninit(void)
 //======================================
 void CTutorial::Update(void)
 {
-	// 終了カウントを加算する
-	m_nEndCount++;
+	if (m_pPolygon->GetEnd() == true)
+	{ // 終了時の場合
+
+		// 終了カウントを加算する
+		m_nEndCount++;
+	}
 
 	if (m_nEndCount >= TRANS_COUNT && m_pPolygon->GetEnd())
 	{ // スキップ時または、終了時の場合
