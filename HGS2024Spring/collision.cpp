@@ -16,6 +16,7 @@
 #include "mob_tree.h"
 #include "player.h"
 #include "enemy.h"
+#include "base.h"
 
 //===============================
 // マクロ定義
@@ -104,12 +105,11 @@ bool collision::ElevOutRangeCollision(D3DXVECTOR3* pPos, const D3DXVECTOR3& posO
 //===============================
 // 木のヒット判定
 //===============================
-void collision::TreeHit(CPlayer* pPlayer)
+bool collision::TreeHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
 {
 	// ローカル変数宣言
 	CListManager<CMobTree*> list = CMobTree::GetList();
 	CMobTree* pTree = nullptr;				// 木のポインタ
-	D3DXVECTOR3 pos = pPlayer->GetPos();	// プレイヤーの位置
 	int nNum = list.GetNumData();			// 総数
 
 	for (int nCnt = 0; nCnt < nNum; nCnt++)
@@ -117,26 +117,22 @@ void collision::TreeHit(CPlayer* pPlayer)
 		// 木のポインタを代入
 		pTree = list.GetData(nCnt);
 
-		if (HexahedronCollision
-		(
-			&pos,
-			pTree->GetPos(),
-			pPlayer->GetPosOld(),
-			pTree->GetPosOld(),
-			PLAYER_MIN,
-			TREE_MIN,
-			PLAYER_MAX,
-			TREE_MAX
-		) == true)
+		if (useful::RectangleCollisionXZ(pos, pTree->GetPos(), size, pTree->GetFileData().vtxMax, -size, pTree->GetFileData().vtxMin) == true)
 		{ // 木に当たった場合
 
-			// 木との当たり判定
-			pPlayer->TreeHit();
+			// 雪玉との衝突時判定
+			pTree->SnowBallHit();
+
+			// 開花処理
+			CGame::GetBase()->Flowering();
+
+			// true を返す
+			return true;
 		}
 	}
 
-	// 位置を適用する
-	pPlayer->SetPos(pos);
+	// false を返す
+	return false;
 }
 
 //===============================

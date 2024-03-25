@@ -54,6 +54,8 @@ public:			// 誰でもアクセスできる
 		TYPE_TREE,				// 木
 		TYPE_BASE,				// 拠点
 		TYPE_SNOWBALL,			// 雪玉
+		TYPE_BASEFLOWER,		// 拠点の花
+		TYPE_GAUGE,				// 春度ゲージ
 		TYPE_MAX				// この列挙型の総数
 	};
 

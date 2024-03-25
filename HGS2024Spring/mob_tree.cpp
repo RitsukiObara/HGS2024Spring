@@ -32,6 +32,7 @@ CMobTree::CMobTree() : CModel(TYPE_TREE, PRIORITY_ENTITY)
 {
 	// 全ての値をクリアする
 	m_pLeaf = nullptr;		// 葉のモデル
+	m_nFloweringCount = 0;	// 咲くまでのカウント
 
 	// リストに追加する
 	m_list.Regist(this);
@@ -86,11 +87,21 @@ void CMobTree::Uninit(void)
 //=========================
 void CMobTree::Update(void)
 {
-	if (m_pLeaf != nullptr)
-	{ // 葉っぱが NULL じゃない場合
+	if (m_nFloweringCount <= 0)
+	{ // 開花カウントが0以下の場合
 
-		// 更新処理
-		m_pLeaf->Update();
+		if (m_pLeaf != nullptr)
+		{ // 葉っぱが NULL じゃない場合
+
+			// 更新処理
+			m_pLeaf->Update();
+		}
+	}
+	else
+	{ // 上記以外
+
+		// 開花カウントを減算する
+		m_nFloweringCount--;
 	}
 }
 
@@ -113,7 +124,7 @@ void CMobTree::Draw(void)
 //=========================
 // 情報の設定処理
 //=========================
-void CMobTree::SetData(const D3DXVECTOR3& pos)
+void CMobTree::SetData(const D3DXVECTOR3& pos, const int nCount)
 {
 	// スクロールの設定処理
 	SetPos(pos);					// 位置
@@ -122,18 +133,33 @@ void CMobTree::SetData(const D3DXVECTOR3& pos)
 	SetScale(SCALE);				// 拡大率
 	SetFileData(CManager::Get()->GetXFile()->Regist(TREE_MODEL));
 
+	// 全ての値を設定する
 	if (m_pLeaf == nullptr)
 	{ // 葉が NULL の場合
 
 		// 葉を生成
 		m_pLeaf = CMobTreeLeaf::Create(pos + LEAF_SHIFT);
 	}
+	m_nFloweringCount = nCount;	// 咲くまでのカウント
+}
+
+//=========================
+// プレイヤーとの衝突時判定
+//=========================
+void CMobTree::SnowBallHit(void)
+{
+	if (m_pLeaf != nullptr)
+	{ // 葉が NULL じゃない場合
+
+		// 雪玉との衝突時判定
+		m_pLeaf->SnowBallHit();
+	}
 }
 
 //=========================
 // 生成処理
 //=========================
-CMobTree* CMobTree::Create(const D3DXVECTOR3& pos)
+CMobTree* CMobTree::Create(const D3DXVECTOR3& pos, const int nCount)
 {
 	// ローカルオブジェクトを生成
 	CMobTree* pTree = nullptr;	// 木のインスタンスを生成
@@ -169,7 +195,7 @@ CMobTree* CMobTree::Create(const D3DXVECTOR3& pos)
 		}
 
 		// 情報の設定処理
-		pTree->SetData(pos);
+		pTree->SetData(pos, nCount);
 	}
 	else
 	{ // オブジェクトが NULL の場合

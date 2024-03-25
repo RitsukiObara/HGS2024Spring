@@ -321,8 +321,17 @@
     <ClCompile Include="base.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
+    <ClCompile Include="base_flower.cpp">
+      <Filter>Tree</Filter>
+    </ClCompile>
     <ClCompile Include="title_logo.cpp">
       <Filter>Scene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="gauge.cpp">
+      <Filter>Scene\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>Scene\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -584,8 +593,17 @@
     <ClInclude Include="base.h">
       <Filter>Tree</Filter>
     </ClInclude>
+    <ClInclude Include="base_flower.h">
+      <Filter>Tree</Filter>
+    </ClInclude>
     <ClInclude Include="title_logo.h">
       <Filter>Scene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
+      <Filter>Scene\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>Scene\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

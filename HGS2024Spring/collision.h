@@ -35,7 +35,7 @@ namespace collision
 	bool ElevOutRangeCollision(D3DXVECTOR3* pPos, const D3DXVECTOR3& posOld, const float fWidth);			// 起伏地面の範囲外の当たり判定
 
 	// 木との当たり判定
-	void TreeHit(CPlayer* pPlayer);		// 木のヒット判定
+	bool TreeHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size);		// 木のヒット判定
 
 	// 敵との当たり判定
 	void EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size);	// 敵と雪玉の当たり判定

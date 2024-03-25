@@ -14,9 +14,10 @@
 namespace
 {
 	const D3DXVECTOR3 MAX_SCALE = D3DXVECTOR3(3.0f, 3.0f, 3.0f);	// Šg‘å—¦‚ÌÅ‘å’l
-	const D3DXVECTOR3 MIN_SCALE = D3DXVECTOR3(0.1f, 0.1f, 0.1f);	// Šg‘å—¦‚ÌÅ¬’l
+	const D3DXVECTOR3 MIN_SCALE = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// Šg‘å—¦‚ÌÅ¬’l
 	const char* LEAF_MODEL = "data\\MODEL\\leaf.x";					// —t‚Ìƒ‚ƒfƒ‹
-	const float SCALE_MOVE = 0.02f;			// Šg‘å—¦‚ÌˆÚ“®—Ê
+	const float SCALE_MOVE = 0.005f;			// Šg‘å—¦‚ÌˆÚ“®—Ê
+	const D3DXVECTOR3 GET_SCALE_SUB = D3DXVECTOR3(0.1f, 0.1f, 0.1f);	// Šg‘å—¦‚ÌŽæ“¾Žž‚ÌŒ¸ŽZ—Ê
 }
 
 //=========================
@@ -89,6 +90,22 @@ void CMobTreeLeaf::SetData(const D3DXVECTOR3& pos)
 	SetRot(NONE_D3DXVECTOR3);		// Œü‚«
 	SetScale(MIN_SCALE);			// Šg‘å—¦
 	SetFileData(CManager::Get()->GetXFile()->Regist(LEAF_MODEL));
+}
+
+//=========================
+// á‹Ê‚Æ‚ÌÕ“ËŽž”»’è
+//=========================
+void CMobTreeLeaf::SnowBallHit(void)
+{
+	// Šg‘å—¦‚ðŽæ“¾
+	D3DXVECTOR3 scale = GetScale();
+
+	if (scale.x >= MIN_SCALE.x)
+	{ // Šg‘å—¦‚ªˆê’è”ˆÈã‚Ìê‡
+
+		// Šg‘å—¦‚ðÅ¬‚É‚·‚é
+		SetScale(GetScale() - GET_SCALE_SUB);
+	}
 }
 
 //=========================

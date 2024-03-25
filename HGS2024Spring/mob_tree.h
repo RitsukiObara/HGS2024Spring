@@ -32,10 +32,12 @@ public:					// 誰でもアクセスできる
 	void Update(void);		// 更新処理
 	void Draw(void);		// 描画処理
 
-	void SetData(const D3DXVECTOR3& pos);		// 情報の設定処理
+	void SetData(const D3DXVECTOR3& pos, const int nCount);		// 情報の設定処理
+
+	void SnowBallHit(void);	// 雪玉との衝突時判定
 
 	// 静的メンバ関数
-	static CMobTree* Create(const D3DXVECTOR3& pos);		// 生成処理
+	static CMobTree* Create(const D3DXVECTOR3& pos, const int nCount);		// 生成処理
 
 	static CListManager<CMobTree*> GetList(void);			// リストの取得処理
 
@@ -43,6 +45,7 @@ private:				// 自分だけアクセスできる
 
 	// メンバ変数
 	CMobTreeLeaf* m_pLeaf;		// 葉っぱの情報
+	int m_nFloweringCount;		// 咲くまでのカウント
 
 	// 静的メンバ変数
 	static CListManager<CMobTree*> m_list;		// リスト情報

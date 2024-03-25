@@ -55,12 +55,16 @@ private:				// 自分だけアクセスできる
 	// メンバ関数
 	void MoveSet(const D3DXVECTOR3& posDest);		// 移動量の設定処理
 	void Progress(void);	// 進行処理
+	void Catch(void);		// キャッチ処理
+	bool Return(void);		// 帰還処理
 
 	// メンバ変数
 	D3DXVECTOR3 m_move;		// 移動量
 	STATE m_state;			// 状態
+	int m_nCatchPercent;	// キャッチする度合
 	int m_nLife;			// 体力
 	int m_nDamageCount;		// ダメージカウント中
+	int m_nStateCount;		// 状態カウント
 	bool m_bDamage;			// ダメージ状況
 
 	// 静的メンバ変数

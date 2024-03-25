@@ -27,6 +27,8 @@
 #include "enemy.h"
 #include "base.h"
 #include "skybox.h"
+#include "gauge.h"
+#include "timer.h"
 
 //--------------------------------------------
 // マクロ定義
@@ -79,13 +81,19 @@ HRESULT CGame::Init(void)
 	// マップの生成
 	CMap::Create();
 
-	CMobTree::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f));
+	CMobTree::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f),300);
 
 	// プレイヤーの生成
 	m_pPlayer = CPlayer::Create();
 
 	// 拠点の生成
 	m_pBase = CBase::Create();
+
+	// ゲージの生成
+	CGauge::Create();
+
+	// タイマーの生成
+	CTimer::Create();
 
 	CEnemy::Create(D3DXVECTOR3(-500.0f, 80.0f, 300.0f));
 
@@ -107,7 +115,13 @@ HRESULT CGame::Init(void)
 void CGame::Uninit(void)
 {
 	// ポインタを NULL にする
-	m_pPause = nullptr;			// ポーズ
+	if (m_pPause != nullptr)
+	{ // ポーズが NULL じゃない場合
+
+		// ポーズの終了処理
+		m_pPause->Uninit();
+	}
+
 	m_pPlayer = nullptr;		// プレイヤー
 	m_pBase = nullptr;			// 拠点
 
