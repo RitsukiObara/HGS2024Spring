@@ -13,8 +13,8 @@
 // 定数定義
 namespace
 {
-	const D3DXVECTOR3 MAP_SIZE = D3DXVECTOR3(1500.0f, 0.0f, 1500.0f);	// サイズ
-	const char* TEXTURE = "data\\TEXTURE\\Map.png";							// テクスチャ
+	const D3DXVECTOR3 MAP_SIZE = D3DXVECTOR3(2000.0f, 0.0f, 2000.0f);	// サイズ
+	const char* TEXTURE = "data\\TEXTURE\\Map.png";						// テクスチャ
 }
 
 //=========================
