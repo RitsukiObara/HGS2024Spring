@@ -1,29 +1,33 @@
 //==========================================
 //
-//  春度ゲージ(gauge.cpp)
+//  タイマー(timer.cpp)
 //  Author : Tomoya Kanazaki
 //
 //==========================================
-#include "gauge.h"
+#include "timer.h"
 #include "manager.h"
 #include "debugproc.h"
+#include "game.h"
+#include "fade.h"
 
 //==========================================
 //  定数定義
 //==========================================
 namespace
 {
-	const D3DXVECTOR3 INIT_SIZE = D3DXVECTOR3(0.0f, 20.0f, 0.0f); // 初期サイズ
-	const D3DXVECTOR3 INIT_POS = D3DXVECTOR3(50.0f, INIT_SIZE.y * 1.5f, 0.0f); // 初期位置
+	const D3DXVECTOR3 POLYGON_POS = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 100.0f, 0.0f); // ポリゴン座標
+	const D3DXVECTOR3 POLYGON_SIZE = D3DXVECTOR3(300.0f, 75.0f, 0.0f); // ポリゴンサイズ
 
-	const D3DXVECTOR3 MAX_SIZE = D3DXVECTOR3((SCREEN_WIDTH - 100.0f) * 0.5f, 20.0f, 0.0f); // 最大サイズ
+	const float LIMIT_TIME = 120.0f; // ゲーム時間
 }
 
 //==========================================
 //  コンストラクタ
 //==========================================
-CGauge::CGauge(CObject::TYPE type, PRIORITY priority) :
-	CObject2D(type, priority)
+CTimer::CTimer(CObject::TYPE type, PRIORITY priority) :
+	CObject2D(type, priority),
+	m_oldTime(0),
+	m_time(0.0f)
 {
 
 }
@@ -31,7 +35,7 @@ CGauge::CGauge(CObject::TYPE type, PRIORITY priority) :
 //==========================================
 //  デストラクタ
 //==========================================
-CGauge::~CGauge()
+CTimer::~CTimer()
 {
 
 }
@@ -39,16 +43,16 @@ CGauge::~CGauge()
 //==========================================
 //  初期化処理
 //==========================================
-HRESULT CGauge::Init()
+HRESULT CTimer::Init()
 {
 	// 親クラスの初期化
 	if (FAILED(CObject2D::Init())) { return E_FAIL; }
 
 	// 座標の設定
-	SetPos(INIT_POS);
+	SetPos(POLYGON_POS);
 
 	// サイズの設定
-	SetSize(INIT_SIZE);
+	SetSize(POLYGON_SIZE);
 
 	// 角度の設定
 	SetRot(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
@@ -60,10 +64,13 @@ HRESULT CGauge::Init()
 	SetAngle();
 
 	// 頂点カラーを設定
-	SetVtxColor(D3DXCOLOR(1.0f, 0.56f, 0.87f, 1.0f));
+	//SetVtxColor(D3DXCOLOR(1.0f, 0.56f, 0.87f, 1.0f));
 
 	// 頂点情報の初期化
 	SetVertex();
+	
+	// 現在時間の取得
+	m_oldTime = timeGetTime();
 
 	return S_OK;
 }
@@ -71,7 +78,7 @@ HRESULT CGauge::Init()
 //==========================================
 //  終了処理
 //==========================================
-void CGauge::Uninit()
+void CTimer::Uninit()
 {
 	CObject2D::Uninit();
 }
@@ -79,13 +86,17 @@ void CGauge::Uninit()
 //==========================================
 //  更新処理
 //==========================================
-void CGauge::Update()
+void CTimer::Update()
 {
-	// サイズの計算
-	CalcSize();
+	// 経過時間の計算
+	CalcTime();
 
-	// 位置の計算
-	CalcPos();
+	// 制限時間を超えたら
+	if (m_time >= LIMIT_TIME)
+	{
+		// チュートリアルに遷移する
+		CManager::Get()->GetFade()->SetFade(CScene::MODE_RESULT);
+	}
 
 	CObject2D::Update();
 }
@@ -93,7 +104,7 @@ void CGauge::Update()
 //==========================================
 //  描画処理
 //==========================================
-void CGauge::Draw()
+void CTimer::Draw()
 {
 	CObject2D::Draw();
 }
@@ -101,59 +112,39 @@ void CGauge::Draw()
 //==========================================
 //  生成処理
 //==========================================
-CGauge* CGauge::Create()
+CTimer* CTimer::Create()
 {
 	// インスタンス生成
-	CGauge* gauge = new CGauge;
+	CTimer* time = new CTimer;
 
 	// NULLチェック
-	if (gauge == nullptr) { return nullptr; }
+	if (time == nullptr) { return nullptr; }
 
 	// 初期化処理
-	if (FAILED(gauge->Init())) { return nullptr; }
+	if (FAILED(time->Init())) { return nullptr; }
 
-	return gauge;
+	return time;
 }
 
 //==========================================
-//  座標の計算処理
+//  経過時間の加算
 //==========================================
-void CGauge::CalcPos()
+void CTimer::CalcTime()
 {
-	// 大きさを取得する
-	D3DXVECTOR3 size = GetSize();
+	// 現在時間の取得
+	DWORD time = timeGetTime();
 
-	// 座標
-	D3DXVECTOR3 pos = INIT_POS;
+	// 前回時間との差を算出(ミリ秒)
+	float difference = (float)(time - m_oldTime) * 0.001f;
 
-	// 初期位置 + 横幅
-	pos.x = INIT_POS.x + size.x;
+	// 経過時間に差分を加算
+	if (!CGame::IsPause())
+	{
+		m_time += difference;
+	}
 
-	// 位置を適用
-	SetPos(pos);
-}
+	// 前回時間を現在時間で上書き
+	m_oldTime = time;
 
-//==========================================
-//  サイズの計算処理
-//==========================================
-void CGauge::CalcSize()
-{
-	// 春度を取得
-	float spring = 50.0f;
-
-	// 春度を割合の数値に変換
-	spring *= 0.01f;
-
-	// 最大サイズに対する春度の割合でサイズの算出
-	D3DXVECTOR3 size = GetSize();
-	size.x = MAX_SIZE.x * spring;
-
-	// サイズを適用
-	SetSize(size);
-
-	// 対角線の長さを算出
-	SetLength();
-
-	// 対角線の角度を算出
-	SetAngle();
+	CManager::Get()->GetDebugProc()->Print("経過時間 : %f", m_time);
 }

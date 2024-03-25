@@ -243,6 +243,7 @@
     <ClCompile Include="stun.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="time.cpp" />
+    <ClCompile Include="timer.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="title_logo.cpp" />
     <ClCompile Include="tutorial.cpp" />
@@ -334,6 +335,7 @@
     <ClInclude Include="stun.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="time.h" />
+    <ClInclude Include="timer.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="title_logo.h" />
     <ClInclude Include="tutorial.h" />
