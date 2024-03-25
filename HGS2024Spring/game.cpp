@@ -30,6 +30,7 @@
 #include "skybox.h"
 #include "gauge.h"
 #include "timer.h"
+#include "CaveatDirection.h"
 
 //--------------------------------------------
 // マクロ定義
@@ -106,6 +107,8 @@ HRESULT CGame::Init(void)
 
 	// タイマーの生成
 	CTimer::Create();
+
+	CCaveatDirection::Create();
 
 	// シーンの初期化
 	CScene::Init();
