@@ -203,7 +203,7 @@ CBase* CBase::Create(void)
 //=========================
 // 開花処理
 //=========================
-void CBase::Flowering(void)
+void CBase::Flowering(const int nPercent)
 {
 	for (int nCnt = 0; nCnt < FLOWERING_POINT; nCnt++)
 	{
@@ -220,7 +220,7 @@ void CBase::Flowering(void)
 	}
 
 	// 咲き度合を加算する
-	m_nPercent++;
+	m_nPercent += nPercent;
 }
 
 //=========================
@@ -230,6 +230,13 @@ void CBase::SetPercent(const int nPercent)
 {
 	// 咲き度合を設定する
 	m_nPercent = nPercent;
+
+	if (m_nPercent <= 0)
+	{ // 度合が0以下の場合
+
+		// 度合を0に補正する
+		m_nPercent = 0;
+	}
 }
 
 //=========================

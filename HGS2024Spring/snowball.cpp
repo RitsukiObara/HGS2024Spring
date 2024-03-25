@@ -88,8 +88,9 @@ void CSnowBall::Update(void)
 	Move();
 
 	if (m_nLife <= 0 ||
-		collision::TreeHit(GetPos(), GetSize()) == true)
-	{ // 寿命が 0 以下になるか、木に当たった場合
+		collision::TreeHit(GetPos(), GetSize()) == true ||
+		collision::EnemyToSnowBallHit(GetPos(), GetSize()))
+	{ // 寿命が 0 以下になるか、何かに当たった場合
 
 		// 終了処理
 		Uninit();
@@ -100,9 +101,6 @@ void CSnowBall::Update(void)
 
 	// 頂点座標の設定処理
 	SetVertex();
-
-	// 敵との当たり判定
-	collision::EnemyToSnowBallHit(GetPos(), GetSize());
 }
 
 //=========================

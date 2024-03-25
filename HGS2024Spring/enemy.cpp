@@ -36,11 +36,12 @@ CListManager<CEnemy*> CEnemy::m_list = {};			// リスト情報
 //=========================
 // オーバーロードコンストラクタ
 //=========================
-CEnemy::CEnemy() : CModel(TYPE_PLAYER, PRIORITY_PLAYER)
+CEnemy::CEnemy() : CModel(TYPE_ENEMY, PRIORITY_ENTITY)
 {
 	// 全ての値をクリアする
 	m_state = STATE_PROGRESS;		// 状態
 	m_move = NONE_D3DXVECTOR3;		// 移動量
+	m_posOrigin = NONE_D3DXVECTOR3;	// 元の位置
 	m_nLife = LIFE;					// 体力
 	m_nCatchPercent = 0;			// キャッチする度合
 	m_nDamageCount = 0;				// ダメージカウント中
@@ -193,6 +194,7 @@ void CEnemy::SetData(const D3DXVECTOR3& pos)
 	SetFileData(CManager::Get()->GetXFile()->Regist(MODEL));
 
 	// 全ての値を設定する
+	m_posOrigin = pos;				// 元の位置
 	m_state = STATE_PROGRESS;		// 状態
 	m_nLife = LIFE;					// 体力
 	m_nDamageCount = 0;				// ダメージカウント中
@@ -321,8 +323,8 @@ void CEnemy::MoveSet(const D3DXVECTOR3& posDest)
 	D3DXVECTOR3 pos = GetPos();
 
 	// 移動量を設定
-	m_move.x = (posDest.x - pos.x) * MOVE_CORRECT;
-	m_move.z = (posDest.z - pos.z) * MOVE_CORRECT;
+	m_move.x = fabsf((posDest.x - pos.x) * MOVE_CORRECT);
+	m_move.z = fabsf((posDest.z - pos.z) * MOVE_CORRECT);
 }
 
 //=======================================
@@ -363,7 +365,8 @@ void CEnemy::Progress(void)
 //=======================================
 void CEnemy::Catch(void)
 {
-	CGame::GetBase()->GetPercent();
+	// 春度を奪う
+	CGame::GetBase()->SetPercent(CGame::GetBase()->GetPercent() - m_nCatchPercent);
 }
 
 //=======================================
@@ -372,15 +375,14 @@ void CEnemy::Catch(void)
 bool CEnemy::Return(void)
 {
 	// 位置を取得する
-	D3DXVECTOR3 posDest = D3DXVECTOR3(-700.0f, 0.0f, 300.0f);
 	D3DXVECTOR3 pos = GetPos();
 	D3DXVECTOR3 rot = GetRot();
 
 	// 向きを設定する
-	rot.y = atan2f(posDest.x - pos.x, posDest.z - pos.z);
+	rot.y = atan2f(m_posOrigin.x - pos.x, m_posOrigin.z - pos.z);
 
-	if (useful::FrameCorrect(posDest.x, &pos.x, m_move.x) == true ||
-		useful::FrameCorrect(posDest.z, &pos.z, m_move.z) == true)
+	if (useful::FrameCorrect(m_posOrigin.x, &pos.x, m_move.x) == true ||
+		useful::FrameCorrect(m_posOrigin.z, &pos.z, m_move.z) == true)
 	{ // 到着した場合
 
 		// true を返す

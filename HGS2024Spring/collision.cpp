@@ -17,6 +17,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "base.h"
+#include "mob_tree_leaf.h"
 
 //===============================
 // マクロ定義
@@ -117,14 +118,15 @@ bool collision::TreeHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
 		// 木のポインタを代入
 		pTree = list.GetData(nCnt);
 
-		if (useful::RectangleCollisionXZ(pos, pTree->GetPos(), size, pTree->GetFileData().vtxMax, -size, pTree->GetFileData().vtxMin) == true)
+		if (pTree->GetLeaf()->GetScale().x >= 1.0f &&
+			useful::RectangleCollisionXZ(pos, pTree->GetPos(), size, pTree->GetFileData().vtxMax * 3.0f, -size, pTree->GetFileData().vtxMin * 3.0f) == true)
 		{ // 木に当たった場合
 
 			// 雪玉との衝突時判定
 			pTree->SnowBallHit();
 
 			// 開花処理
-			CGame::GetBase()->Flowering();
+			CGame::GetBase()->Flowering(pTree->GetPercent());
 
 			// true を返す
 			return true;
@@ -138,7 +140,7 @@ bool collision::TreeHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
 //===============================
 // 敵と雪玉の当たり判定
 //===============================
-void collision::EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
+bool collision::EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
 {
 	// ローカル変数宣言
 	CListManager<CEnemy*> list = CEnemy::GetList();
@@ -151,13 +153,19 @@ void collision::EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& si
 		pEnemy = list.GetData(nCnt);
 
 		if (pEnemy->IsDamage() == false &&
-			useful::RectangleCollisionXZ(pos, pEnemy->GetPos(), size, pEnemy->GetFileData().vtxMax, -size, pEnemy->GetFileData().vtxMin) == true)
+			useful::RectangleCollisionXZ(pos, pEnemy->GetPos(), size, pEnemy->GetFileData().vtxMax * 2.0f, -size, pEnemy->GetFileData().vtxMin * 2.0f) == true)
 		{ // 敵に当たった場合
 
 			// ヒット処理
 			pEnemy->Hit();
+
+			// true を返す
+			return true;
 		}
 	}
+
+	// false を返す
+	return false;
 }
 
 /*

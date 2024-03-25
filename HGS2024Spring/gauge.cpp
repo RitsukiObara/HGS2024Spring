@@ -7,14 +7,16 @@
 #include "gauge.h"
 #include "manager.h"
 #include "debugproc.h"
+#include "game.h"
+#include "base.h"
 
 //==========================================
 //  定数定義
 //==========================================
 namespace
 {
-	const D3DXVECTOR3 INIT_SIZE = D3DXVECTOR3(0.0f, 20.0f, 0.0f); // 初期サイズ
-	const D3DXVECTOR3 INIT_POS = D3DXVECTOR3(50.0f, INIT_SIZE.y * 1.5f, 0.0f); // 初期位置
+	const D3DXVECTOR3 INIT_POLYGON_SIZE = D3DXVECTOR3(0.0f, 20.0f, 0.0f); // 初期サイズ
+	const D3DXVECTOR3 INIT_POLYGON_POS = D3DXVECTOR3(50.0f, INIT_POLYGON_SIZE.y * 1.5f, 0.0f); // 初期位置
 
 	const D3DXVECTOR3 MAX_SIZE = D3DXVECTOR3((SCREEN_WIDTH - 100.0f) * 0.5f, 20.0f, 0.0f); // 最大サイズ
 }
@@ -45,10 +47,10 @@ HRESULT CGauge::Init()
 	if (FAILED(CObject2D::Init())) { return E_FAIL; }
 
 	// 座標の設定
-	SetPos(INIT_POS);
+	SetPos(INIT_POLYGON_POS);
 
 	// サイズの設定
-	SetSize(INIT_SIZE);
+	SetSize(INIT_POLYGON_SIZE);
 
 	// 角度の設定
 	SetRot(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
@@ -124,10 +126,10 @@ void CGauge::CalcPos()
 	D3DXVECTOR3 size = GetSize();
 
 	// 座標
-	D3DXVECTOR3 pos = INIT_POS;
+	D3DXVECTOR3 pos = INIT_POLYGON_POS;
 
 	// 初期位置 + 横幅
-	pos.x = INIT_POS.x + size.x;
+	pos.x = INIT_POLYGON_POS.x + size.x;
 
 	// 位置を適用
 	SetPos(pos);
@@ -139,7 +141,16 @@ void CGauge::CalcPos()
 void CGauge::CalcSize()
 {
 	// 春度を取得
-	float spring = 50.0f;
+	float spring = (float)CGame::GetBase()->GetPercent();
+
+	// 最大値を補正
+	if (spring >= 100.0f)
+	{
+		spring = 100.0f;
+
+		// クリアにする
+		CGame::SetState(CGame::STATE_CLEAR);
+	}
 
 	// 春度を割合の数値に変換
 	spring *= 0.01f;

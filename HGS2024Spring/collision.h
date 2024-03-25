@@ -38,7 +38,7 @@ namespace collision
 	bool TreeHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size);		// 木のヒット判定
 
 	// 敵との当たり判定
-	void EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size);	// 敵と雪玉の当たり判定
+	bool EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size);	// 敵と雪玉の当たり判定
 
 	// 汎用的な当たり判定
 	bool HexahedronCollision(D3DXVECTOR3* pos, const D3DXVECTOR3& posBlock, const D3DXVECTOR3& posOld, const D3DXVECTOR3& posOldBlock, const D3DXVECTOR3& min, const D3DXVECTOR3& minBlock, const D3DXVECTOR3& max, const D3DXVECTOR3& maxBlock);		// 六面体の当たり判定

@@ -12,6 +12,9 @@
 #include "texture.h"
 #include "sound.h"
 
+#include "game.h"
+#include "base.h"
+
 //==========================================
 //  定数定義
 //==========================================
@@ -133,8 +136,8 @@ void CTimer::Update()
 	// 制限時間を超えたら
 	if (m_time >= LIMIT_TIME)
 	{
-		// チュートリアルに遷移する
-		CManager::Get()->GetFade()->SetFade(CScene::MODE_RESULT);
+		// ゲームオーバー
+		CGame::SetState(CGame::STATE_GAMEOVER);
 	}
 
 	CObject2D::Update();
