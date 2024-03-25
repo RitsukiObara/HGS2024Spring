@@ -300,6 +300,9 @@
     <ClCompile Include="ocean.cpp">
       <Filter>Map</Filter>
     </ClCompile>
+    <ClCompile Include="snowball.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -544,6 +547,9 @@
     </ClInclude>
     <ClInclude Include="ocean.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="snowball.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

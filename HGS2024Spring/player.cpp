@@ -9,7 +9,11 @@
 #include "player.h"
 #include "useful.h"
 
+#include "snowball.h"
+
+//=======================================
 // 定数定義
+//=======================================
 namespace
 {
 	const D3DXVECTOR3 POS = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 位置
@@ -63,8 +67,21 @@ void CPlayer::Uninit(void)
 //=========================
 void CPlayer::Update(void)
 {
-	// 操作処理
-	Control();
+	if (CManager::Get()->GetInputGamePad()->GetConnect() == true)
+	{ // コントローラーが繋がっている場合
+
+		// 操作処理
+		Control();
+	}
+	else
+	{ // 上記以外
+
+		// キーボード処理
+		Keyboard();
+	}
+
+	// 射撃処理
+	Shot();
 }
 
 //=========================
@@ -181,4 +198,81 @@ void CPlayer::Control(void)
 	// 位置を向きを適用
 	SetPos(pos);
 	SetRot(rot);
+}
+
+//=========================
+// キーボード処理
+//=========================
+void CPlayer::Keyboard(void)
+{
+	// ローカル変数を宣言する
+	D3DXVECTOR3 pos = GetPos();		// 位置
+	D3DXVECTOR3 rot = GetRot();		// 向き
+	float fMoveX = 0.0f;			// X軸の移動量
+	float fMoveZ = 0.0f;			// Z軸の移動量
+	float fStickRot = 0.0f;			// 向き
+
+	if (CManager::Get()->GetInputKeyboard()->GetPress(DIK_W) == true)
+	{ // Wキーを押した場合
+
+		// Z軸の移動量を設定する
+		fMoveZ = 1.0f;
+	}
+
+	if (CManager::Get()->GetInputKeyboard()->GetPress(DIK_S) == true)
+	{ // Sキーを押した場合
+
+		// Z軸の移動量を設定する
+		fMoveZ = -1.0f;
+	}
+
+	if (CManager::Get()->GetInputKeyboard()->GetPress(DIK_A) == true)
+	{ // Aキーを押した場合
+
+		// X軸の移動量を設定する
+		fMoveX = -1.0f;
+	}
+
+	if (CManager::Get()->GetInputKeyboard()->GetPress(DIK_D) == true)
+	{ // Dキーを押した場合
+
+		// X軸の移動量を設定する
+		fMoveX = 1.0f;
+	}
+
+	if (fMoveX != 0 ||
+		fMoveZ != 0)
+	{ // 右スティックをどっちかに倒した場合
+
+		// スティックの向きを設定する
+		fStickRot = atan2f(fMoveX, fMoveZ);
+
+		// 向きの正規化
+		useful::RotNormalize(&fStickRot);
+
+		// 移動させる
+		pos.x += sinf(fStickRot) * SPEED;
+		pos.z += cosf(fStickRot) * SPEED;
+
+		// 向きを設定する
+		rot.y = fStickRot;
+	}
+
+	// 位置と向きを設定する
+	SetPos(pos);
+	SetRot(rot);
+}
+
+//=========================
+// 射撃処理
+//=========================
+void CPlayer::Shot(void)
+{
+	if (CManager::Get()->GetInputGamePad()->GetTrigger(CInputGamePad::JOYKEY_A, 0) == true ||
+		CManager::Get()->GetInputKeyboard()->GetTrigger(DIK_SPACE) == true)
+	{ // 射撃する
+
+		// 雪玉の生成
+		CSnowBall::Create(GetPos(), GetRot());
+	}
 }
