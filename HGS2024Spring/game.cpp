@@ -71,7 +71,7 @@ CGame::~CGame()
 HRESULT CGame::Init(void)
 {
 	// スカイボックスの生成処理
-	//CSkyBox::Create();
+	CSkyBox::Create();
 
 	// 海の生成
 	COcean::Create();
