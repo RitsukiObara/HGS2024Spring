@@ -224,7 +224,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 #ifdef _DEBUG
 
 		// フェードのメモリを確保する
-		m_pFade = m_pFade->Create(CScene::MODE_GAME);
+		m_pFade = m_pFade->Create(CScene::MODE_TITLE);
 #else
 
 		// シーンのメモリを確保する
