@@ -142,17 +142,17 @@ void CGame::Update(void)
 		break;
 	}
 
-	if (CManager::Get()->GetInputKeyboard()->GetTrigger(DIK_RETURN) == true ||
-		CManager::Get()->GetInputGamePad()->GetTrigger(CInputGamePad::JOYKEY_START, 0) == true ||
-		CManager::Get()->GetInputGamePad()->GetTrigger(CInputGamePad::JOYKEY_A, 0) == true)
-	{ // ENTERキーを押した場合
+	//if (CManager::Get()->GetInputKeyboard()->GetTrigger(DIK_RETURN) == true ||
+	//	CManager::Get()->GetInputGamePad()->GetTrigger(CInputGamePad::JOYKEY_START, 0) == true ||
+	//	CManager::Get()->GetInputGamePad()->GetTrigger(CInputGamePad::JOYKEY_A, 0) == true)
+	//{ // ENTERキーを押した場合
 
-		// チュートリアルに遷移する
-		CManager::Get()->GetFade()->SetFade(CScene::MODE_RESULT);
+	//	// リザルトに遷移する
+	//	CManager::Get()->GetFade()->SetFade(CScene::MODE_RESULT);
 
-		// この先の処理を行わない
-		return;
-	}
+	//	// この先の処理を行わない
+	//	return;
+	//}
 
 	if (m_bPause == true)
 	{ // ポーズ状況が true の場合
