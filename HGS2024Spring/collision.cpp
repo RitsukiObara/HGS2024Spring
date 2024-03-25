@@ -138,7 +138,7 @@ bool collision::TreeHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
 //===============================
 // 敵と雪玉の当たり判定
 //===============================
-void collision::EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
+bool collision::EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
 {
 	// ローカル変数宣言
 	CListManager<CEnemy*> list = CEnemy::GetList();
@@ -156,8 +156,14 @@ void collision::EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& si
 
 			// ヒット処理
 			pEnemy->Hit();
+
+			// true を返す
+			return true;
 		}
 	}
+
+	// false を返す
+	return false;
 }
 
 /*

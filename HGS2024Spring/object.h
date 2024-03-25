@@ -56,6 +56,8 @@ public:			// 誰でもアクセスできる
 		TYPE_SNOWBALL,			// 雪玉
 		TYPE_BASEFLOWER,		// 拠点の花
 		TYPE_GAUGE,				// 春度ゲージ
+		TYPE_ENEMY,				// 敵
+		TYPE_ENEMYHOME,			// 敵のホーム
 		TYPE_MAX				// この列挙型の総数
 	};
 

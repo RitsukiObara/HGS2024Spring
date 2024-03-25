@@ -100,7 +100,7 @@ void CMobTreeLeaf::SnowBallHit(void)
 	// Šg‘å—¦‚ðŽæ“¾
 	D3DXVECTOR3 scale = GetScale();
 
-	if (scale.x >= MIN_SCALE.x)
+	if (scale.x > MIN_SCALE.x)
 	{ // Šg‘å—¦‚ªˆê’è”ˆÈã‚Ìê‡
 
 		// Šg‘å—¦‚ðÅ¬‚É‚·‚é
