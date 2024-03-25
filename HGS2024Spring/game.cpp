@@ -20,6 +20,7 @@
 #include "sound.h"
 
 #include "objectElevation.h"
+#include "map.h"
 #include "skybox.h"
 
 //--------------------------------------------
@@ -60,21 +61,11 @@ CGame::~CGame()
 //=========================================
 HRESULT CGame::Init(void)
 {
-	// テキスト読み込み処理
-	CElevation::TxtSet("data\\TXT\\Elevation.txt");
-
-	// メッシュのテキスト読み込み
-	//CMesh::TxtSet();
-
-	//if (m_pField == NULL)
-	//{ // フィールドへのポインタが NULL の場合
-
-	//	// フィールドの設定処理
-	//	m_pField = CField::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1000.0f, 0.0f, 1000.0f));
-	//}
-
 	// スカイボックスの生成処理
 	CSkyBox::Create();
+
+	// マップの生成処理
+	CMap::Create();
 
 	// シーンの初期化
 	CScene::Init();
