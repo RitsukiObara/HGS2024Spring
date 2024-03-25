@@ -27,6 +27,7 @@
 #include "enemy.h"
 #include "base.h"
 #include "skybox.h"
+#include "gauge.h"
 
 //--------------------------------------------
 // マクロ定義
@@ -86,6 +87,9 @@ HRESULT CGame::Init(void)
 
 	// 拠点の生成
 	m_pBase = CBase::Create();
+
+	// ゲージの生成
+	CGauge::Create();
 
 	CEnemy::Create(D3DXVECTOR3(-500.0f, 80.0f, 300.0f));
 
