@@ -35,6 +35,7 @@
 // 静的メンバ変数宣言
 //--------------------------------------------
 CPause* CGame::m_pPause = nullptr;							// ポーズの情報
+CPlayer* CGame::m_pPlayer = nullptr;						// プレイヤーの情報
 CGame::STATE CGame::m_GameState = CGame::STATE_START;		// ゲームの進行状態
 int CGame::m_nFinishCount = 0;								// 終了カウント
 bool CGame::m_bPause = false;								// ポーズ状況
@@ -46,6 +47,7 @@ CGame::CGame()
 {
 	// 全ての値をクリアする
 	m_pPause = nullptr;			// ポーズ
+	m_pPlayer = nullptr;		// プレイヤー
 	m_nFinishCount = 0;			// 終了カウント
 	m_GameState = STATE_START;	// 状態
 	m_bPause = false;			// ポーズ状況
@@ -76,7 +78,7 @@ HRESULT CGame::Init(void)
 	CMobTree::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f));
 
 	// プレイヤーの生成
-	CPlayer::Create();
+	m_pPlayer = CPlayer::Create();
 
 	// シーンの初期化
 	CScene::Init();
@@ -97,6 +99,7 @@ void CGame::Uninit(void)
 {
 	// ポインタを NULL にする
 	m_pPause = nullptr;			// ポーズ
+	m_pPlayer = nullptr;		// プレイヤー
 
 	// 情報を初期化する
 	m_GameState = STATE_START;	// ゲームの進行状態
@@ -312,10 +315,28 @@ CGame::STATE CGame::GetState(void)
 }
 
 //======================================
+// プレイヤーの取得処理
+//======================================
+CPlayer* CGame::GetPlayer(void)
+{
+	// プレイヤーの情報を返す
+	return m_pPlayer;
+}
+
+//======================================
 // ポーズのNULL化処理
 //======================================
 void CGame::DeletePause(void)
 {
 	// ポーズのポインタを NULL にする
 	m_pPause = nullptr;
+}
+
+//======================================
+// プレイヤーのNULL化処理
+//======================================
+void CGame::DeletePlayer(void)
+{
+	// プレイヤーのポインタを NULL にする
+	m_pPlayer = nullptr;
 }
