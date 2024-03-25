@@ -2,6 +2,7 @@
 //
 // プレイヤーヘッダー[player.h]
 // Author 小原立暉
+// adder : 金崎朋弥
 //
 //===================================
 #ifndef _PLAYER_H_
@@ -49,6 +50,7 @@ private:				// 自分だけアクセスできる
 	void Control(void);		// 操作処理
 	void Camera(void);		// カメラ操作
 	void Shot(void);		// 射撃処理
+	D3DXVECTOR3 Limit(D3DXVECTOR3& pos); // 移動制限 : 金崎
 
 	// メンバ変数
 	STATE m_state;			// 状態

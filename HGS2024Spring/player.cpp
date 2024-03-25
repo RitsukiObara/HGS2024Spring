@@ -2,6 +2,7 @@
 //
 // プレイヤーのメイン処理[player.cpp]
 // Author 小原立暉
+// Adder : 金崎朋弥
 //
 //=======================================
 #include "manager.h"
@@ -26,6 +27,10 @@ namespace
 	const D3DXVECTOR3 SNOWBALL_POS = D3DXVECTOR3(0.0f, 100.0f, 0.0f);	// 雪玉の出る位置
 	const char* MODEL = "data\\MODEL\\Player\\player.x";			// モデル
 	const float SPEED = 10.0f;					// 速度
+
+	// 金崎
+	const D3DXVECTOR3 MAX_LIMIT = D3DXVECTOR3(2000.0f, 0.0f, 2000.0f); // 移動制限の最大値
+	const D3DXVECTOR3 MIN_LIMIT = D3DXVECTOR3(-2000.0f, 0.0f, -2000.0f); // 移動制限の最小値
 }
 
 //=========================
@@ -220,6 +225,9 @@ void CPlayer::Control(void)
 		rot.y = fStickRot;
 	}
 
+	// 移動制限
+	pos = Limit(pos);
+
 	// 位置を向きを適用
 	SetPos(pos);
 	SetRot(rot);
@@ -259,4 +267,34 @@ void CPlayer::Shot(void)
 		// 雪玉の生成
 		CSnowBall::Create(GetPos() + SNOWBALL_POS, GetRot());
 	}
+}
+
+//==========================================
+//  移動制限
+//==========================================
+D3DXVECTOR3 CPlayer::Limit(D3DXVECTOR3& pos)
+{
+	D3DXVECTOR3 correction = pos;
+
+	// xの補正
+	if (correction.x > MAX_LIMIT.x)
+	{
+		correction.x = MAX_LIMIT.x;
+	}
+	if (correction.x < MIN_LIMIT.x)
+	{
+		correction.x = MIN_LIMIT.x;
+	}
+
+	// zの補正
+	if (correction.z > MAX_LIMIT.z)
+	{
+		correction.z = MAX_LIMIT.z;
+	}
+	if (correction.z < MIN_LIMIT.z)
+	{
+		correction.z = MIN_LIMIT.z;
+	}
+
+	return correction;
 }
