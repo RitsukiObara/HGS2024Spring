@@ -333,6 +333,9 @@
     <ClCompile Include="timer.cpp">
       <Filter>Scene\Game</Filter>
     </ClCompile>
+    <ClCompile Include="enemy_home.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -604,6 +607,9 @@
     </ClInclude>
     <ClInclude Include="timer.h">
       <Filter>Scene\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy_home.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

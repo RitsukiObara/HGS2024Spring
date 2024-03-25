@@ -36,7 +36,7 @@ CListManager<CEnemy*> CEnemy::m_list = {};			// リスト情報
 //=========================
 // オーバーロードコンストラクタ
 //=========================
-CEnemy::CEnemy() : CModel(TYPE_PLAYER, PRIORITY_PLAYER)
+CEnemy::CEnemy() : CModel(TYPE_ENEMY, PRIORITY_ENTITY)
 {
 	// 全ての値をクリアする
 	m_state = STATE_PROGRESS;		// 状態
