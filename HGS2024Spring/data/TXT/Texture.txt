@@ -18,6 +18,9 @@ TEXTURE = data\TEXTURE\TimeDot.png			# 時間の点
 TEXTURE = data\TEXTURE\March.png			# 3月
 TEXTURE = data\TEXTURE\April.png			# 4月
 TEXTURE = data\TEXTURE\May.png				# 5月
+TEXTURE = data\TEXTURE\Tutorial_0.png		# チュートリアル0
+TEXTURE = data\TEXTURE\Tutorial_1.png		# チュートリアル1
+TEXTURE = data\TEXTURE\Tutorial_2.png		# チュートリアル2
 
 # 演出系
 TEXTURE = data\TEXTURE\Platform\danger001.png		# 危険マーク001
