@@ -59,13 +59,14 @@ private:				// 自分だけアクセスできる
 	bool Return(void);		// 帰還処理
 
 	// メンバ変数
-	D3DXVECTOR3 m_move;		// 移動量
-	STATE m_state;			// 状態
-	int m_nCatchPercent;	// キャッチする度合
-	int m_nLife;			// 体力
-	int m_nDamageCount;		// ダメージカウント中
-	int m_nStateCount;		// 状態カウント
-	bool m_bDamage;			// ダメージ状況
+	D3DXVECTOR3 m_move;			// 移動量
+	D3DXVECTOR3 m_posOrigin;	// 元の位置
+	STATE m_state;				// 状態
+	int m_nCatchPercent;		// キャッチする度合
+	int m_nLife;				// 体力
+	int m_nDamageCount;			// ダメージカウント中
+	int m_nStateCount;			// 状態カウント
+	bool m_bDamage;				// ダメージ状況
 
 	// 静的メンバ変数
 	static CListManager<CEnemy*> m_list;		// リスト情報

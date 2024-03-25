@@ -230,6 +230,13 @@ void CBase::SetPercent(const int nPercent)
 {
 	// ç‚«“x‡‚ğİ’è‚·‚é
 	m_nPercent = nPercent;
+
+	if (m_nPercent <= 0)
+	{ // “x‡‚ª0ˆÈ‰º‚Ìê‡
+
+		// “x‡‚ğ0‚É•â³‚·‚é
+		m_nPercent = 0;
+	}
 }
 
 //=========================

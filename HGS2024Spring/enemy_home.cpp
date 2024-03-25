@@ -14,11 +14,9 @@
 //=======================================
 namespace
 {
-	const D3DXVECTOR3 POS = D3DXVECTOR3(-900.0f, 200.0f, 800.0f);		// 位置
-	const D3DXVECTOR3 ROT = D3DXVECTOR3(0.0f, -0.5f, D3DX_PI * -0.6f);	// 向き
 	const D3DXVECTOR3 SCALE = D3DXVECTOR3(2.0f, 2.0f, 2.0f);			// 拡大率
 	const char* MODEL = "data\\MODEL\\Enemy\\enemy_base.x";				// 敵のホーム
-	const int ENEMY_INTERVAL = 120;			// 敵の出る間隔
+	const int ENEMY_INTERVAL = 600;			// 敵の出る間隔
 	const float ENEMY_HEIGHT = 100.0f;		// 敵の高さ
 }
 
@@ -99,12 +97,12 @@ void CEnemyHome::Draw(void)
 //=========================
 // 情報の設定処理
 //=========================
-void CEnemyHome::SetData(void)
+void CEnemyHome::SetData(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot)
 {
 	// スクロールの設定処理
-	SetPos(POS);			// 位置
-	SetPosOld(POS);			// 前回の位置
-	SetRot(ROT);			// 向き
+	SetPos(pos);			// 位置
+	SetPosOld(pos);			// 前回の位置
+	SetRot(rot);			// 向き
 	SetScale(SCALE);		// 拡大率
 	SetFileData(CManager::Get()->GetXFile()->Regist(MODEL));
 }
@@ -112,7 +110,7 @@ void CEnemyHome::SetData(void)
 //=========================
 // 生成処理
 //=========================
-CEnemyHome* CEnemyHome::Create(void)
+CEnemyHome* CEnemyHome::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot)
 {
 	// ローカルオブジェクトを生成
 	CEnemyHome* pEnemy = nullptr;	// 敵のホームのインスタンスを生成
@@ -148,7 +146,7 @@ CEnemyHome* CEnemyHome::Create(void)
 		}
 
 		// 情報の設定処理
-		pEnemy->SetData();
+		pEnemy->SetData(pos, rot);
 	}
 	else
 	{ // オブジェクトが NULL の場合

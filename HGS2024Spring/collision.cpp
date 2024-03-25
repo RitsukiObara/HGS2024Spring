@@ -119,7 +119,7 @@ bool collision::TreeHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
 		pTree = list.GetData(nCnt);
 
 		if (pTree->GetLeaf()->GetScale().x >= 1.0f &&
-			useful::RectangleCollisionXZ(pos, pTree->GetPos(), size, pTree->GetFileData().vtxMax, -size, pTree->GetFileData().vtxMin) == true)
+			useful::RectangleCollisionXZ(pos, pTree->GetPos(), size, pTree->GetFileData().vtxMax * 3.0f, -size, pTree->GetFileData().vtxMin * 3.0f) == true)
 		{ // –Ø‚É“–‚½‚Á‚½ê‡
 
 			// á‹Ê‚Æ‚ÌÕ“Ë”»’è
@@ -153,7 +153,7 @@ bool collision::EnemyToSnowBallHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& si
 		pEnemy = list.GetData(nCnt);
 
 		if (pEnemy->IsDamage() == false &&
-			useful::RectangleCollisionXZ(pos, pEnemy->GetPos(), size, pEnemy->GetFileData().vtxMax, -size, pEnemy->GetFileData().vtxMin) == true)
+			useful::RectangleCollisionXZ(pos, pEnemy->GetPos(), size, pEnemy->GetFileData().vtxMax * 2.0f, -size, pEnemy->GetFileData().vtxMin * 2.0f) == true)
 		{ // “G‚É“–‚½‚Á‚½ê‡
 
 			// ƒqƒbƒgˆ—
