@@ -20,10 +20,10 @@ namespace
 	const float SPEED = 30.0f;			// 速度
 }
 
-//=======================================
-// マクロ定義
-//=======================================
-
+//-------------------------------------------
+// 静的メンバ変数宣言
+//-------------------------------------------
+CListManager<CSnowBall*> CSnowBall::m_list = {};			// リスト情報
 
 //=========================
 // コンストラクタ
@@ -32,6 +32,9 @@ CSnowBall::CSnowBall() : CBillboard(CObject::TYPE_EFFECT, CObject::PRIORITY_EFFE
 {
 	// 全ての値をクリアする
 	m_move = NONE_D3DXVECTOR3;		// 移動量
+
+	// リストに追加する
+	m_list.Regist(this);
 }
 
 //=========================
@@ -65,6 +68,9 @@ void CSnowBall::Uninit(void)
 {
 	// 終了
 	CBillboard::Uninit();
+
+	// 引き抜き処理
+	m_list.Pull(this);
 }
 
 //=========================
@@ -164,6 +170,15 @@ CSnowBall* CSnowBall::Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot)
 
 	// 雪玉のポインタを返す
 	return pSnowball;
+}
+
+//=======================================
+// リストの取得処理
+//=======================================
+CListManager<CSnowBall*> CSnowBall::GetList(void)
+{
+	// リスト構造の情報を返す
+	return m_list;
 }
 
 //=========================

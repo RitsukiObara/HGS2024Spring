@@ -8,13 +8,17 @@
 #include "enemy.h"
 #include "useful.h"
 
+#include "game.h"
+#include "base.h"
+
 //=======================================
 // 定数定義
 //=======================================
 namespace
 {
-	const D3DXVECTOR3 SCALE = D3DXVECTOR3(2.5f, 2.5f, 2.5f);		// 拡大率
-	const char* MODEL = "data\\MODEL\\ENEMY\\enemy.x";		// 敵のモデル
+	const D3DXVECTOR3 SCALE = D3DXVECTOR3(2.5f, 2.5f, 2.5f);	// 拡大率
+	const char* MODEL = "data\\MODEL\\ENEMY\\enemy.x";			// 敵のモデル
+	const float MOVE_CORRECT = 0.001f;							// 移動量の補正数
 }
 
 //-------------------------------------------
@@ -29,6 +33,7 @@ CEnemy::CEnemy() : CModel(TYPE_PLAYER, PRIORITY_PLAYER)
 {
 	// 全ての値をクリアする
 	m_state = STATE_PROGRESS;		// 状態
+	m_move = NONE_D3DXVECTOR3;		// 移動量
 
 	// リストに追加する
 	m_list.Regist(this);
@@ -79,7 +84,12 @@ void CEnemy::Update(void)
 	{
 	case CEnemy::STATE_PROGRESS:		// 進行状態
 
+		// 進行状態
+		Progress();
 
+		break;
+
+	case CEnemy::STATE_CATCH:			// キャッチ状態
 
 		break;
 
@@ -117,6 +127,19 @@ void CEnemy::SetData(const D3DXVECTOR3& pos)
 	SetRot(NONE_D3DXVECTOR3);				// 向き
 	SetScale(SCALE);						// 拡大率
 	SetFileData(CManager::Get()->GetXFile()->Regist(MODEL));
+
+	// 全ての値を設定する
+	m_state = STATE_PROGRESS;		// 状態
+
+	// 拠点のポインタを取得
+	CBase* pBase = CGame::GetBase();
+
+	if (pBase != nullptr)
+	{ // 拠点が存在する場合
+
+		// 移動量の設定処理
+		MoveSet(pBase->GetPos());
+	}
 }
 
 //=========================
@@ -181,4 +204,50 @@ CListManager<CEnemy*> CEnemy::GetList(void)
 {
 	// リスト構造の情報を返す
 	return m_list;
+}
+
+//=======================================
+// 移動量の設定処理
+//=======================================
+void CEnemy::MoveSet(const D3DXVECTOR3& posDest)
+{
+	// 位置を取得する
+	D3DXVECTOR3 pos = GetPos();
+
+	// 移動量を設定
+	m_move.x = (posDest.x - pos.x) * MOVE_CORRECT;
+	m_move.z = (posDest.z - pos.z) * MOVE_CORRECT;
+}
+
+//=======================================
+// 進行処理
+//=======================================
+void CEnemy::Progress(void)
+{
+	// 拠点のポインタを取得
+	CBase* pBase = CGame::GetBase();
+
+	if (pBase != nullptr)
+	{ // 拠点が存在する場合
+
+		// 位置を取得する
+		D3DXVECTOR3 posDest = pBase->GetPos();
+		D3DXVECTOR3 pos = GetPos();
+		D3DXVECTOR3 rot = GetRot();
+
+		// 向きを設定する
+		rot.y = atan2f(posDest.x - pos.x, posDest.z - pos.z);
+
+		if (useful::FrameCorrect(posDest.x, &pos.x, m_move.x) == true ||
+			useful::FrameCorrect(posDest.z, &pos.z, m_move.z) == true)
+		{ // 到着した場合
+
+			// キャッチ状態にする
+			m_state = STATE_CATCH;
+		}
+
+		// 位置と向きを適用
+		SetPos(pos);
+		SetRot(rot);
+	}
 }

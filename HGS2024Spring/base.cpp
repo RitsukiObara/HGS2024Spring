@@ -16,8 +16,8 @@
 namespace
 {
 	const D3DXVECTOR3 POS = D3DXVECTOR3(1100.0f, 0.0f, 1300.0f);		// ˆÊ’u
-	const D3DXVECTOR3 SCALE = D3DXVECTOR3(7.0f, 7.0f, 7.0f);		// Šg‘å—¦
-	const char* MODEL = "data\\MODEL\\wood.x";		// ƒ‚ƒfƒ‹
+	const D3DXVECTOR3 SCALE = D3DXVECTOR3(4.0f, 4.0f, 4.0f);			// Šg‘å—¦
+	const char* MODEL = "data\\MODEL\\ayakasi.x";		// ƒ‚ƒfƒ‹
 }
 
 //=========================
