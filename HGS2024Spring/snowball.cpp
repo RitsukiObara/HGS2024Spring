@@ -19,7 +19,7 @@ namespace
 	const D3DXVECTOR3 SNOWBALL_SIZE = D3DXVECTOR3(30.0f, 30.0f, 0.0f);		// サイズ
 	const char* TEXTURE = "data\\TEXTURE\\snow.jpg";		// テクスチャ
 	const float SPEED = 30.0f;			// 速度
-	const int LIFE = 180;				// 寿命
+	const int LIFE = 30;				// 寿命
 }
 
 //-------------------------------------------
@@ -87,8 +87,9 @@ void CSnowBall::Update(void)
 	// 移動処理
 	Move();
 
-	if (m_nLife <= 0)
-	{ // 寿命が 0 以下になった場合
+	if (m_nLife <= 0 ||
+		collision::TreeHit(GetPos(), GetSize()) == true)
+	{ // 寿命が 0 以下になるか、木に当たった場合
 
 		// 終了処理
 		Uninit();

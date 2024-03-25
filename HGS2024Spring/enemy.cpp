@@ -10,6 +10,7 @@
 
 #include "game.h"
 #include "base.h"
+#include "anim_reaction.h"
 
 //=======================================
 // 定数定義
@@ -21,7 +22,8 @@ namespace
 	const float MOVE_CORRECT = 0.001f;							// 移動量の補正数
 	const int LIFE = 5;											// 体力
 	const D3DXCOLOR DAMAGE_COL = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);		// ダメージの時の色
-	const int DAMAGE_COUNT = 5;				// ダメージ状態のカウント数
+	const int DAMAGE_COUNT = 6;				// ダメージ状態のカウント数
+	const D3DXVECTOR3 EXPLOSION_SIZE = D3DXVECTOR3(80.0f, 80.0f, 0.0f);	// 爆発のサイズ
 }
 
 //-------------------------------------------
@@ -186,6 +188,9 @@ void CEnemy::Hit(void)
 
 	if (m_nLife <= 0)
 	{ // 体力が0以下になった場合
+
+		// 爆発を生成
+		CAnimReaction::Create(GetPos(), EXPLOSION_SIZE, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f), CAnimReaction::TYPE::TYPE_EXPLOSION, 4, 1);
 
 		// 終了処理
 		Uninit();

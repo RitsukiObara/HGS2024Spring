@@ -9,6 +9,7 @@
 #include "useful.h"
 
 #include "game.h"
+#include "base_flower.h"
 
 //=======================================
 // 定数定義
@@ -16,8 +17,8 @@
 namespace
 {
 	const D3DXVECTOR3 POS = D3DXVECTOR3(1100.0f, 0.0f, 1300.0f);		// 位置
-	const D3DXVECTOR3 SCALE = D3DXVECTOR3(4.0f, 4.0f, 4.0f);			// 拡大率
 	const char* MODEL = "data\\MODEL\\ayakasi.x";		// モデル
+	const float FLOWERPOINT_HEIGHT = 500.0f;			// 花が咲く高さ
 }
 
 //=========================
@@ -25,7 +26,10 @@ namespace
 //=========================
 CBase::CBase() : CModel(TYPE_BASE, PRIORITY_ENTITY)
 {
-
+	// 全ての値をクリアする
+	m_pPosVtx = nullptr;		// 頂点のポインタ
+	m_nNumVtx = 0;				// 頂点数
+	m_nNowFlowPoint = 0;		// 現在咲いているポイント
 }
 
 //=========================
@@ -57,6 +61,9 @@ HRESULT CBase::Init(void)
 //=========================
 void CBase::Uninit(void)
 {
+	// 開花ポイントを破棄する
+	delete[] m_pPosVtx;
+
 	// 終了
 	CModel::Uninit();
 
@@ -90,8 +97,42 @@ void CBase::SetData(void)
 	SetPos(POS);					// 位置
 	SetPosOld(POS);					// 前回の位置
 	SetRot(NONE_D3DXVECTOR3);		// 向き
-	SetScale(SCALE);				// 拡大率
+	SetScale(NONE_SCALE);			// 拡大率
 	SetFileData(CManager::Get()->GetXFile()->Regist(MODEL));
+
+	// モデルの頂点数を取得
+	int nNumFlowPoint = 0;
+	int nNowPoint = 0;
+	m_nNumVtx = GetFileData().pMesh->GetNumVertices();
+
+	for (int nCnt = 0; nCnt < m_nNumVtx; nCnt++)
+	{
+		if (GetPos().y + GetFileData().vtxPos[nCnt].y >= FLOWERPOINT_HEIGHT)
+		{ // 一定の頂点数以上の場合
+
+			// 開花ポイントを加算する
+			nNumFlowPoint++;
+		}
+	}
+
+	// 全ての値を設定する
+	m_pPosVtx = new D3DXVECTOR3[nNumFlowPoint];	// 開花させる頂点
+
+	for (int nCnt = 0; nCnt < m_nNumVtx; nCnt++)
+	{
+		if (GetPos().y + GetFileData().vtxPos[nCnt].y >= FLOWERPOINT_HEIGHT)
+		{ // 一定の頂点数以上の場合
+
+			// 開花ポイントを加算する
+			m_pPosVtx[nNowPoint] = GetFileData().vtxPos[nCnt];
+
+			// 現在のポイントを加算する
+			nNowPoint++;
+		}
+	}
+
+	// 頂点数を再設定する
+	m_nNumVtx = nNumFlowPoint;
 }
 
 //=========================
@@ -147,4 +188,19 @@ CBase* CBase::Create(void)
 
 	// 木のポインタを返す
 	return pTree;
+}
+
+//=========================
+// 開花処理
+//=========================
+void CBase::Flowering(void)
+{
+	for (int nCnt = m_nNowFlowPoint; nCnt < m_nNowFlowPoint + 170; nCnt++)
+	{
+		// 花の生成
+		CBaseFlower::Create(GetPos() + m_pPosVtx[nCnt]);
+	}
+
+	// 現在咲いているポイントを加算する
+	m_nNowFlowPoint += 170;
 }

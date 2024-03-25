@@ -91,9 +91,6 @@ void CPlayer::Update(void)
 
 	// ËŒ‚ˆ—
 	Shot();
-
-	//–Ø‚Æ‚Ì“–‚½‚è”»’è
-	collision::TreeHit(this);
 }
 
 //=========================
