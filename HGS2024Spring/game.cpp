@@ -84,13 +84,14 @@ HRESULT CGame::Init(void)
 	// マップの生成
 	CMap::Create();
 
-	CMobTree::Create(D3DXVECTOR3(-1700.0f, 0.0f, -1820.0f), 0);
-	CMobTree::Create(D3DXVECTOR3(-1230.0f, 0.0f, -1200.0f), 1000);
-	CMobTree::Create(D3DXVECTOR3(-690.0f, 0.0f, -980.0f), 2000);
-	CMobTree::Create(D3DXVECTOR3(-800.0f, 0.0f, -625.0f), 3000);
-	CMobTree::Create(D3DXVECTOR3(-130.0f, 0.0f, -740.0f), 4000);
-	CMobTree::Create(D3DXVECTOR3(345.0f, 0.0f, -520.0f), 5000);
-	CMobTree::Create(D3DXVECTOR3(735.0f, 0.0f, 75.0f), 6000);
+	// 木の生成
+	CMobTree::Create(D3DXVECTOR3(-1700.0f, 0.0f, -1820.0f), 0, 1);
+	CMobTree::Create(D3DXVECTOR3(-1230.0f, 0.0f, -1200.0f), 1000, 1);
+	CMobTree::Create(D3DXVECTOR3(-690.0f, 0.0f, -980.0f), 2000, 1);
+	CMobTree::Create(D3DXVECTOR3(-800.0f, 0.0f, -625.0f), 3000, 2);
+	CMobTree::Create(D3DXVECTOR3(-130.0f, 0.0f, -740.0f), 4000, 2);
+	CMobTree::Create(D3DXVECTOR3(345.0f, 0.0f, -520.0f), 5000, 2);
+	CMobTree::Create(D3DXVECTOR3(735.0f, 0.0f, 75.0f), 6000, 3);
 
 	// プレイヤーの生成
 	m_pPlayer = CPlayer::Create();

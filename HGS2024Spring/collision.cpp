@@ -17,6 +17,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "base.h"
+#include "mob_tree_leaf.h"
 
 //===============================
 // マクロ定義
@@ -117,14 +118,15 @@ bool collision::TreeHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
 		// 木のポインタを代入
 		pTree = list.GetData(nCnt);
 
-		if (useful::RectangleCollisionXZ(pos, pTree->GetPos(), size, pTree->GetFileData().vtxMax, -size, pTree->GetFileData().vtxMin) == true)
+		if (pTree->GetLeaf()->GetScale().x >= 1.0f &&
+			useful::RectangleCollisionXZ(pos, pTree->GetPos(), size, pTree->GetFileData().vtxMax, -size, pTree->GetFileData().vtxMin) == true)
 		{ // 木に当たった場合
 
 			// 雪玉との衝突時判定
 			pTree->SnowBallHit();
 
 			// 開花処理
-			CGame::GetBase()->Flowering();
+			CGame::GetBase()->Flowering(pTree->GetPercent());
 
 			// true を返す
 			return true;

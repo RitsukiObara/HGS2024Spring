@@ -30,7 +30,7 @@ public:					// 誰でもアクセスできる
 
 	void SetData(void);		// 情報の設定処理
 
-	void Flowering(void);	// 開花処理
+	void Flowering(const int nPercent);			// 開花処理
 
 	// セット・ゲット関係
 	void SetPercent(const int nPercent);		// 咲き度合の設定処理

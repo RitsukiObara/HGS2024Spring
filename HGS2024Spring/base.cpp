@@ -203,7 +203,7 @@ CBase* CBase::Create(void)
 //=========================
 // ŠJ‰Ôˆ—
 //=========================
-void CBase::Flowering(void)
+void CBase::Flowering(const int nPercent)
 {
 	for (int nCnt = 0; nCnt < FLOWERING_POINT; nCnt++)
 	{
@@ -220,7 +220,7 @@ void CBase::Flowering(void)
 	}
 
 	// ç‚«“x‡‚ğ‰ÁZ‚·‚é
-	m_nPercent++;
+	m_nPercent += nPercent;
 }
 
 //=========================
