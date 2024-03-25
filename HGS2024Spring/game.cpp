@@ -30,6 +30,7 @@
 #include "skybox.h"
 #include "gauge.h"
 #include "timer.h"
+#include "CaveatDirection.h"
 
 //--------------------------------------------
 // マクロ定義
@@ -42,7 +43,6 @@
 CPause* CGame::m_pPause = nullptr;							// ポーズの情報
 CPlayer* CGame::m_pPlayer = nullptr;						// プレイヤーの情報
 CBase* CGame::m_pBase = nullptr;							// 拠点の情報
-CEnemyHome* CGame::m_pEnemyHome = nullptr;					// 敵の拠点
 CGame::STATE CGame::m_GameState = CGame::STATE_START;		// ゲームの進行状態
 int CGame::m_nFinishCount = 0;								// 終了カウント
 bool CGame::m_bPause = false;								// ポーズ状況
@@ -56,7 +56,6 @@ CGame::CGame()
 	m_pPause = nullptr;			// ポーズ
 	m_pPlayer = nullptr;		// プレイヤー
 	m_pBase = nullptr;			// 拠点
-	m_pEnemyHome = nullptr;		// 敵の拠点
 	m_nFinishCount = 0;			// 終了カウント
 	m_GameState = STATE_START;	// 状態
 	m_bPause = false;			// ポーズ状況
@@ -84,13 +83,14 @@ HRESULT CGame::Init(void)
 	// マップの生成
 	CMap::Create();
 
-	CMobTree::Create(D3DXVECTOR3(-1700.0f, 0.0f, -1820.0f), 0);
-	CMobTree::Create(D3DXVECTOR3(-1230.0f, 0.0f, -1200.0f), 1000);
-	CMobTree::Create(D3DXVECTOR3(-690.0f, 0.0f, -980.0f), 2000);
-	CMobTree::Create(D3DXVECTOR3(-800.0f, 0.0f, -625.0f), 3000);
-	CMobTree::Create(D3DXVECTOR3(-130.0f, 0.0f, -740.0f), 4000);
-	CMobTree::Create(D3DXVECTOR3(345.0f, 0.0f, -520.0f), 5000);
-	CMobTree::Create(D3DXVECTOR3(735.0f, 0.0f, 75.0f), 6000);
+	// 木の生成
+	CMobTree::Create(D3DXVECTOR3(-1700.0f, 0.0f, -1820.0f), 0, 1);
+	CMobTree::Create(D3DXVECTOR3(-1230.0f, 0.0f, -1200.0f), 1000, 1);
+	CMobTree::Create(D3DXVECTOR3(-690.0f, 0.0f, -980.0f), 2000, 1);
+	CMobTree::Create(D3DXVECTOR3(-800.0f, 0.0f, -625.0f), 3000, 2);
+	CMobTree::Create(D3DXVECTOR3(-130.0f, 0.0f, -740.0f), 4000, 2);
+	CMobTree::Create(D3DXVECTOR3(345.0f, 0.0f, -520.0f), 5000, 2);
+	CMobTree::Create(D3DXVECTOR3(735.0f, 0.0f, 75.0f), 6000, 3);
 
 	// プレイヤーの生成
 	m_pPlayer = CPlayer::Create();
@@ -99,7 +99,8 @@ HRESULT CGame::Init(void)
 	m_pBase = CBase::Create();
 
 	// 敵の拠点の生成
-	m_pEnemyHome = CEnemyHome::Create();
+	CEnemyHome::Create(D3DXVECTOR3(-900.0f, 200.0f, 800.0f), D3DXVECTOR3(0.0f, -0.5f, D3DX_PI * -0.6f));
+	CEnemyHome::Create(D3DXVECTOR3(1700.0f, 200.0f, 100.0f), D3DXVECTOR3(0.0f, -1.4f, D3DX_PI * -0.6f));
 
 	// ゲージの生成
 	CGauge::Create();
@@ -107,13 +108,15 @@ HRESULT CGame::Init(void)
 	// タイマーの生成
 	CTimer::Create();
 
+	CCaveatDirection::Create();
+
 	// シーンの初期化
 	CScene::Init();
 
 	// 情報の初期化
 	m_nFinishCount = 0;				// 終了カウント
 	m_GameState = STATE_START;		// 状態
-	m_bPause = false;			// ポーズ状況
+	m_bPause = false;				// ポーズ状況
 
 	// 成功を返す
 	return S_OK;
@@ -134,10 +137,8 @@ void CGame::Uninit(void)
 
 	m_pPlayer = nullptr;		// プレイヤー
 	m_pBase = nullptr;			// 拠点
-	m_pEnemyHome = nullptr;		// 敵の拠点
 
 	// 情報を初期化する
-	m_GameState = STATE_START;	// ゲームの進行状態
 	m_bPause = false;			// ポーズ状況
 
 	// 終了カウントを初期化する
@@ -168,7 +169,14 @@ void CGame::Update(void)
 
 		break;
 
-	case CGame::STATE_GOAL:
+	case CGame::STATE_CLEAR:
+
+		// 遷移処理
+		Transition();
+
+		break;
+
+	case CGame::STATE_GAMEOVER:
 
 		// 遷移処理
 		Transition();
@@ -368,15 +376,6 @@ CBase* CGame::GetBase(void)
 }
 
 //======================================
-// 敵の拠点の取得処理
-//======================================
-CEnemyHome* CGame::GetEnemyHome(void)
-{
-	// 敵の拠点の情報を返す
-	return m_pEnemyHome;
-}
-
-//======================================
 // ポーズのNULL化処理
 //======================================
 void CGame::DeletePause(void)
@@ -401,13 +400,4 @@ void CGame::DeleteBase(void)
 {
 	// 拠点を NULL にする
 	m_pBase = nullptr;
-}
-
-//======================================
-// 敵の拠点のNULL化処理
-//======================================
-void CGame::DeleteEnemyHome(void)
-{
-	// 敵の拠点を NULL にする
-	m_pEnemyHome = nullptr;
 }

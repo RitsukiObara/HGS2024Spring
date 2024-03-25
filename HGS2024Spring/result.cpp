@@ -21,6 +21,11 @@
 //--------------------------------------------
 // マクロ定義
 //--------------------------------------------
+namespace
+{
+	const char* CLEAR_TEXTURE = "data\\TEXTURE\\gameclear00.png";		// ゲームクリア
+	const char* GAMEOVER_TEXTURE = "data\\TEXTURE\\gameclear00.png";	// ゲームオーバー
+}
 
 //=========================================
 // コンストラクタ

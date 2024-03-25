@@ -147,6 +147,9 @@ void CGauge::CalcSize()
 	if (spring >= 100.0f)
 	{
 		spring = 100.0f;
+
+		// クリアにする
+		CGame::SetState(CGame::STATE_CLEAR);
 	}
 
 	// 春度を割合の数値に変換

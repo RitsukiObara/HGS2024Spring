@@ -17,7 +17,7 @@ namespace
 	const D3DXVECTOR3 MIN_SCALE = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// Šg‘å—¦‚ÌÅ¬’l
 	const char* LEAF_MODEL = "data\\MODEL\\leaf.x";					// —t‚Ìƒ‚ƒfƒ‹
 	const float SCALE_MOVE = 0.005f;			// Šg‘å—¦‚ÌˆÚ“®—Ê
-	const D3DXVECTOR3 GET_SCALE_SUB = D3DXVECTOR3(0.1f, 0.1f, 0.1f);	// Šg‘å—¦‚ÌŽæ“¾Žž‚ÌŒ¸ŽZ—Ê
+	const D3DXVECTOR3 GET_SCALE_SUB = D3DXVECTOR3(0.5f, 0.5f, 0.5f);	// Šg‘å—¦‚ÌŽæ“¾Žž‚ÌŒ¸ŽZ—Ê
 }
 
 //=========================

@@ -33,6 +33,7 @@ CMobTree::CMobTree() : CModel(TYPE_TREE, PRIORITY_ENTITY)
 	// 全ての値をクリアする
 	m_pLeaf = nullptr;		// 葉のモデル
 	m_nFloweringCount = 0;	// 咲くまでのカウント
+	m_nPercent = 0;			// 度合
 
 	// リストに追加する
 	m_list.Regist(this);
@@ -124,7 +125,7 @@ void CMobTree::Draw(void)
 //=========================
 // 情報の設定処理
 //=========================
-void CMobTree::SetData(const D3DXVECTOR3& pos, const int nCount)
+void CMobTree::SetData(const D3DXVECTOR3& pos, const int nCount, const int nPercent)
 {
 	// スクロールの設定処理
 	SetPos(pos);					// 位置
@@ -140,7 +141,8 @@ void CMobTree::SetData(const D3DXVECTOR3& pos, const int nCount)
 		// 葉を生成
 		m_pLeaf = CMobTreeLeaf::Create(pos + LEAF_SHIFT);
 	}
-	m_nFloweringCount = nCount;	// 咲くまでのカウント
+	m_nFloweringCount = nCount;		// 咲くまでのカウント
+	m_nPercent = nPercent;			// 度合
 }
 
 //=========================
@@ -157,9 +159,27 @@ void CMobTree::SnowBallHit(void)
 }
 
 //=========================
+// 葉の情報の取得処理
+//=========================
+CMobTreeLeaf* CMobTree::GetLeaf(void) const
+{
+	// 葉の情報を返す
+	return m_pLeaf;
+}
+
+//=========================
+// 度合の取得処理
+//=========================
+int CMobTree::GetPercent(void) const
+{
+	// 度合を返す
+	return m_nPercent;
+}
+
+//=========================
 // 生成処理
 //=========================
-CMobTree* CMobTree::Create(const D3DXVECTOR3& pos, const int nCount)
+CMobTree* CMobTree::Create(const D3DXVECTOR3& pos, const int nCount, const int nPercent)
 {
 	// ローカルオブジェクトを生成
 	CMobTree* pTree = nullptr;	// 木のインスタンスを生成
@@ -195,7 +215,7 @@ CMobTree* CMobTree::Create(const D3DXVECTOR3& pos, const int nCount)
 		}
 
 		// 情報の設定処理
-		pTree->SetData(pos, nCount);
+		pTree->SetData(pos, nCount, nPercent);
 	}
 	else
 	{ // オブジェクトが NULL の場合
