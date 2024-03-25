@@ -324,6 +324,9 @@
     <ClCompile Include="title_logo.cpp">
       <Filter>Scene\Title</Filter>
     </ClCompile>
+    <ClCompile Include="gauge.cpp">
+      <Filter>Scene\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -586,6 +589,9 @@
     </ClInclude>
     <ClInclude Include="title_logo.h">
       <Filter>Scene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="gauge.h">
+      <Filter>Scene\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
