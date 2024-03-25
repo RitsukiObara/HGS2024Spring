@@ -13,9 +13,10 @@
 //=======================================
 namespace
 {
-	const D3DXVECTOR3 SCALE = D3DXVECTOR3(3.0f, 3.0f, 3.0f);	// 拡大率
-	const D3DXCOLOR IMMATURE_COL = D3DXCOLOR(0.2f, 1.0f, 0.2f, 1.0f);		// 未熟状態の葉の色
-	const char* LEAF_MODEL = "data\\MODEL\\leaf.x";				// 葉のモデル
+	const D3DXVECTOR3 MAX_SCALE = D3DXVECTOR3(3.0f, 3.0f, 3.0f);	// 拡大率の最大値
+	const D3DXVECTOR3 MIN_SCALE = D3DXVECTOR3(0.1f, 0.1f, 0.1f);	// 拡大率の最小値
+	const char* LEAF_MODEL = "data\\MODEL\\leaf.x";					// 葉のモデル
+	const float SCALE_MOVE = 0.02f;			// 拡大率の移動量
 }
 
 //=========================
@@ -23,8 +24,7 @@ namespace
 //=========================
 CMobTreeLeaf::CMobTreeLeaf() : CModel(TYPE_NONE, PRIORITY_ENTITY)
 {
-	// 全ての値をクリアする
-	m_col = IMMATURE_COL;		// 色
+
 }
 
 //=========================
@@ -65,7 +65,8 @@ void CMobTreeLeaf::Uninit(void)
 //=========================
 void CMobTreeLeaf::Update(void)
 {
-
+	// 成長処理
+	Growth();
 }
 
 //=========================
@@ -74,7 +75,7 @@ void CMobTreeLeaf::Update(void)
 void CMobTreeLeaf::Draw(void)
 {
 	// 描画処理
-	CModel::Draw(m_col);
+	CModel::Draw();
 }
 
 //=========================
@@ -86,11 +87,8 @@ void CMobTreeLeaf::SetData(const D3DXVECTOR3& pos)
 	SetPos(pos);					// 位置
 	SetPosOld(pos);					// 前回の位置
 	SetRot(NONE_D3DXVECTOR3);		// 向き
-	SetScale(SCALE);				// 拡大率
+	SetScale(MIN_SCALE);			// 拡大率
 	SetFileData(CManager::Get()->GetXFile()->Regist(LEAF_MODEL));
-
-	// 全ての値を設定する
-	m_col = IMMATURE_COL;		// 色
 }
 
 //=========================
@@ -146,4 +144,21 @@ CMobTreeLeaf* CMobTreeLeaf::Create(const D3DXVECTOR3& pos)
 
 	// 葉のポインタを返す
 	return pLeaf;
+}
+
+//=========================
+// 成長処理
+//=========================
+void CMobTreeLeaf::Growth(void)
+{
+	// 拡大率を取得
+	D3DXVECTOR3 scale = GetScale();
+
+	// 均等な補正処理
+	useful::FrameCorrect(MAX_SCALE.x, &scale.x, SCALE_MOVE);
+	useful::FrameCorrect(MAX_SCALE.y, &scale.y, SCALE_MOVE);
+	useful::FrameCorrect(MAX_SCALE.z, &scale.z, SCALE_MOVE);
+
+	// 拡大率の適用
+	SetScale(scale);
 }

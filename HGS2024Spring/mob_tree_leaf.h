@@ -35,8 +35,8 @@ public:					// 誰でもアクセスできる
 
 private:				// 自分だけアクセスできる
 
-	// メンバ変数
-	D3DXCOLOR m_col;		// 色
+	// メンバ関数
+	void Growth(void);		// 成長処理
 };
 
 #endif
