@@ -30,11 +30,13 @@ public:
 private:
 
 	// メンバ関数
-	void CalcTime();
+	void CalcTime(); // 経過時間の計算
+	void Floating(); // 大きさの浮動
 
 	// メンバ変数
 	DWORD m_oldTime; // 前回時間
 	float m_time; // 経過時間
+	bool m_bPichUp; // ピッチが上がったフラグ
 
 };
 
