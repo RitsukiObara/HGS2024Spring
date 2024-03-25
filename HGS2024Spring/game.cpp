@@ -28,6 +28,7 @@
 #include "base.h"
 #include "skybox.h"
 #include "gauge.h"
+#include "timer.h"
 
 //--------------------------------------------
 // マクロ定義
@@ -90,6 +91,9 @@ HRESULT CGame::Init(void)
 
 	// ゲージの生成
 	CGauge::Create();
+
+	// タイマーの生成
+	CTimer::Create();
 
 	CEnemy::Create(D3DXVECTOR3(-500.0f, 80.0f, 300.0f));
 
