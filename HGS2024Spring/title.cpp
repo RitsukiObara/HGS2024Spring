@@ -17,6 +17,7 @@
 #include "objectTri2D.h"
 
 #include "skybox.h"
+#include "title_logo.h"
 
 // マクロ定義
 #define SET_RANKING_TIMER		(600)		// ランキング画面に遷移するカウント数
@@ -51,6 +52,9 @@ HRESULT CTitle::Init(void)
 
 	// スカイボックスの生成処理
 	CSkyBox::Create();
+
+	// タイトルロゴの生成
+	CTitleLogo::Create();
 
 	// 全ての値を初期化する
 	m_nTransCount = 0;
