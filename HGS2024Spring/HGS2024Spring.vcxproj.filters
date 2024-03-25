@@ -55,6 +55,9 @@
     <Filter Include="Map">
       <UniqueIdentifier>{2f98164d-23c4-4f2f-9421-ea330e24654c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{50842704-c336-484c-9dd1-f7c9698835b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -290,6 +293,9 @@
     </ClCompile>
     <ClCompile Include="map.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -529,6 +535,9 @@
     </ClInclude>
     <ClInclude Include="map.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -900,8 +900,8 @@ void CCamera::Normal(void)
 
 	// –Ú“I‚ÌŽ‹“_‚ðÝ’è‚·‚é
 	m_posV.x = 0.0f;
-	m_posV.y = 2000.0f;
-	m_posV.z = -200.0f;
+	m_posV.y = 500.0f;
+	m_posV.z = -2000.0f;
 }
 
 //=======================

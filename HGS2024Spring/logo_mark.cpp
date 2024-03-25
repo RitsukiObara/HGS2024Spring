@@ -17,7 +17,7 @@
 //--------------------------------------------
 #define LOGO_SCREEN_SIZE		(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f))		// ロゴ画面のスクリーンのサイズ
 #define LOGO_MARK_SIZE			(D3DXVECTOR3(200.0f, 200.0f, 0.0f))									// ロゴ画面のマークのサイズ
-#define LOGO_MARK_TEXTURE		"data/TEXTURE/ObaraArcadia2.png"									// ロゴマークのテクスチャ
+#define LOGO_MARK_TEXTURE		"data/TEXTURE/BafferOverRun.png"									// ロゴマークのテクスチャ
 
 //============================
 // コンストラクタ
@@ -63,7 +63,7 @@ HRESULT CLogoMark::Init(void)
 			m_aLogoMark[nCntUI]->SetSize(LOGO_SCREEN_SIZE);
 
 			// 色の設定処理
-			m_aLogoMark[nCntUI]->SetVtxColor(D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.0f));
+			m_aLogoMark[nCntUI]->SetVtxColor(D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f));
 
 			break;
 

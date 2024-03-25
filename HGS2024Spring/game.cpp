@@ -21,6 +21,7 @@
 
 #include "objectElevation.h"
 #include "map.h"
+#include "player.h"
 #include "skybox.h"
 
 //--------------------------------------------
@@ -66,6 +67,9 @@ HRESULT CGame::Init(void)
 
 	// マップの生成処理
 	CMap::Create();
+
+	// プレイヤーの生成
+	CPlayer::Create();
 
 	// シーンの初期化
 	CScene::Init();
