@@ -11,9 +11,10 @@
 //-----------------------------------------------------------------------------
 CSound::SOUNDINFO CSound::m_aSoundInfo[CSound::SOUND_LABEL_MAX] =
 {
-	{ "data\\BGM\\TitleBGM.wav",-1 },		// タイトルBGM
+	{ "data\\BGM\\title.wav",-1 },			// タイトルBGM
 	{ "data\\BGM\\Game.wav",-1 },			// ゲームBGM
-	{ "data\\BGM\\ResultBGM.wav",-1 },		// リザルトBGM
+	{ "data\\BGM\\gameclear.wav",-1 },		// リザルトクリアBGM
+	{ "data\\BGM\\gameover.wav",-1 },		// リザルトゲームオーバーBGM
 	{ "data\\BGM\\RankingBGM.wav",-1 },		// ランキングBGM
 	{ "data\\SE\\Run.wav",0 },				// 走行音
 	{ "data\\SE\\RunStart.wav",0 },			// 走り始め音
@@ -32,7 +33,8 @@ CSound::SOUNDINFO CSound::m_aSoundInfo[CSound::SOUND_LABEL_MAX] =
 	{ "data\\SE\\Cannon.wav",0 },			// 大砲の音
 	{ "data\\SE\\GroundQuake.wav",0 },		// グラウンドクエイク音
 	{ "data\\SE\\Stun.wav",0 },				// 気絶音
-	{ "data\\SE\\Damage.wav",0 },			// ダメージ音
+	{ "data\\SE\\sakura\\hit.wav",0 },				// ダメージ音
+	{ "data\\SE\\sakura\\bullet.wav",0 },			// 発射音
 };
 
 //=============================================================================

@@ -27,6 +27,8 @@ public:
 	// Ã“Iƒƒ“ƒoŠÖ”
 	static CCaveatDirection* Create(); // ¶¬ˆ—
 
+	void move(void);
+
 private:
 
 };

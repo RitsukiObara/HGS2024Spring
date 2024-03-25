@@ -7,6 +7,7 @@
 #include "manager.h"
 #include "enemy.h"
 #include "useful.h"
+#include "sound.h"
 
 #include "game.h"
 #include "base.h"
@@ -238,6 +239,8 @@ void CEnemy::Hit(void)
 
 		// ダメージ状況を true にする
 		m_bDamage = true;				// ダメージ状況
+
+		CManager::Get()->GetSound()->Play(CSound::SOUND_LABEL_SE_DAMAGE);
 	}
 }
 

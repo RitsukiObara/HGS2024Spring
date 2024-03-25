@@ -12,6 +12,8 @@
 #include "shadowCircle.h"
 #include "objectElevation.h"
 #include "useful.h"
+#include "manager.h"
+#include "sound.h"
 
 #include "mob_tree.h"
 #include "player.h"
@@ -127,6 +129,8 @@ bool collision::TreeHit(const D3DXVECTOR3& pos, const D3DXVECTOR3& size)
 
 			// ŠJ‰Ôˆ—
 			CGame::GetBase()->Flowering(pTree->GetPercent());
+
+			CManager::Get()->GetSound()->Play(CSound::SOUND_LABEL_SE_DAMAGE);
 
 			// true ‚ð•Ô‚·
 			return true;

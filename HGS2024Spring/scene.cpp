@@ -112,8 +112,21 @@ void CScene::SetData(const MODE mode)
 
 		case MODE_RESULT:
 
-			// リザルトBGMを流す
-			CManager::Get()->GetSound()->Play(CSound::SOUND_LABEL_BGM_RESULT);
+			switch (CGame::GetState())
+			{
+			case CGame::STATE_CLEAR:
+				// リザルトBGMを流す
+				CManager::Get()->GetSound()->Play(CSound::SOUND_LABEL_BGM_CLEAR);
+				break;
+			case CGame::STATE_GAMEOVER:
+				// リザルトBGMを流す
+				CManager::Get()->GetSound()->Play(CSound::SOUND_LABEL_BGM_GAMEOVER);
+				break;
+			default:
+				// 停止
+				assert(false);
+				break;
+			}
 
 			break;
 

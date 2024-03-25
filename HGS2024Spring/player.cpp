@@ -9,6 +9,7 @@
 #include "input.h"
 #include "player.h"
 #include "useful.h"
+#include "sound.h"
 
 #include "snowball.h"
 #include "game.h"
@@ -266,6 +267,8 @@ void CPlayer::Shot(void)
 
 		// á‹Ê‚Ì¶¬
 		CSnowBall::Create(GetPos() + SNOWBALL_POS, GetRot());
+
+		CManager::Get()->GetSound()->Play(CSound::SOUND_LABEL_SE_SHOT);
 	}
 }
 

@@ -21,7 +21,8 @@ public:			// 誰でもアクセス出来る
 	{
 		SOUND_LABEL_BGM_TITLE = 0,		// タイトルBGM
 		SOUND_LABEL_BGM_GAME,			// ゲームBGM
-		SOUND_LABEL_BGM_RESULT,			// リザルトBGM
+		SOUND_LABEL_BGM_CLEAR,			// リザルトクリアBGM
+		SOUND_LABEL_BGM_GAMEOVER,		// リザルトゲームオーバーBGM
 		SOUND_LABEL_BGM_RANKING,		// ランキングBGM
 		SOUND_LABEL_SE_RUN,				// 走行音
 		SOUND_LABEL_SE_RUNSTART,		// 走り始め音
@@ -41,6 +42,7 @@ public:			// 誰でもアクセス出来る
 		SOUND_LABEL_SE_GROUNDQUAKE,		// グラウンドクエイク音
 		SOUND_LABEL_SE_STUN,			// 気絶音
 		SOUND_LABEL_SE_DAMAGE,			// ダメージ音
+		SOUND_LABEL_SE_SHOT,			// 発射音
 		SOUND_LABEL_MAX					// この列挙型の総数
 	};
 
