@@ -63,7 +63,7 @@ CGame::~CGame()
 HRESULT CGame::Init(void)
 {
 	// スカイボックスの生成処理
-	CSkyBox::Create();
+	//CSkyBox::Create();
 
 	// マップの生成処理
 	CMap::Create();

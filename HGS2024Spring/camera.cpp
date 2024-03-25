@@ -894,14 +894,14 @@ void CCamera::TypeProcess(void)
 void CCamera::Normal(void)
 {
 	// 目的の注視点を設定する
-	m_posR.x = 0.0f;
+	m_posR.x = -300.0f;
 	m_posR.y = 0.0f;
 	m_posR.z = 0.0f;
 
 	// 目的の視点を設定する
 	m_posV.x = 0.0f;
-	m_posV.y = 500.0f;
-	m_posV.z = -2000.0f;
+	m_posV.y = 2000.0f;
+	m_posV.z = -1500.0f;
 }
 
 //=======================
